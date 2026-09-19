@@ -1,0 +1,72 @@
+# Padra Platform Launcher — model fleet
+#
+# The control panel writes this file when you add, remove or reconfigure a
+# model, and it stays hand-editable. Every entry under `models:` becomes a
+# selectable model id at the gateway; the gateway starts `unsloth run` for it
+# on demand and routes by the `model` field of each request.
+#
+# On first start the launcher fills `models:` from the GGUF models already
+# downloaded on this machine (the Hugging Face cache and LM Studio). Use the
+# "Model library" panel to add more from the Unsloth catalog.
+
+gateway:
+  # 127.0.0.1 keeps the gateway private. Turn on "Share with the local network"
+  # in the control panel (or set 0.0.0.0 here) to serve other machines.
+  host: 127.0.0.1
+  port: 8900
+
+  # Key every client must send. Left empty, a strong key is generated on the
+  # first run and written back here. Env override: GATEWAY_API_KEY
+  api_key: ''
+
+  # exclusive  -> one backend loaded at a time; swaps on demand (single GPU)
+  # concurrent -> all backends stay loaded (needs VRAM for all)
+  mode: exclusive
+
+  # Used when a request omits "model". Filled in when the first model is added.
+  default_model: ''
+
+  # Start default_model at boot instead of on first request.
+  preload: false
+
+  # Seconds of inactivity before a loaded model is unloaded. 0 disables it.
+  idle_timeout: 0
+
+  # Seconds. Agentic turns are long; keep this generous.
+  request_timeout: 1800
+
+  # Seconds to wait for `unsloth run` to load a model.
+  start_timeout: 900
+
+  # Path to the unsloth CLI.
+  unsloth_bin: unsloth
+
+  # Wire format written into ~/.codex/config.toml. Codex documents "responses"
+  # as the supported value; "chat" is available for older builds.
+  wire_api: responses
+
+  # `default` serves unlisted model ids with the default model, which is what
+  # Claude Code needs. `error` returns 404 instead.
+  unknown_model: default
+
+  # Fill an empty fleet from the models already on this disk.
+  auto_import: true
+
+  # Extra folders to scan for GGUF files, on top of the Hugging Face cache.
+  extra_model_paths: []
+
+models: []
+
+# Each entry looks like this:
+#
+#   - alias: qwen3-coder-30b
+#     repo: unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF
+#     quant: UD-Q4_K_XL
+#     port: 8801
+#     context_length: 262144
+#     reasoning: off          # on | off, for reasoning-capable models
+#     disable_tools: true     # required when an external coding agent runs the tools
+#     extra_args: []          # passed straight to `unsloth run`
+#     env: {}                 # e.g. { CUDA_VISIBLE_DEVICES: "0" }
+#     # api_key: sk-unsloth-… # skip capturing the key from `unsloth run` output
+#     # served_id: …          # skip /v1/models discovery

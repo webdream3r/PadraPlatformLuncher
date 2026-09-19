@@ -1,0 +1,16 @@
+@inject IStringLocalizer<UiStrings> L
+
+<Router AppAssembly="@typeof(Routes).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <main id="main">
+            <section class="panel">
+                <div class="panel-head"><h2>@L["error.not_found"]</h2></div>
+                <p class="strip muted">@L["error.not_found_body"]</p>
+            </section>
+        </main>
+    </NotFound>
+</Router>

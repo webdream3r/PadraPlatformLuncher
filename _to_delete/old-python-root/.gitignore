@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.py[cod]
+build/
+dist/
+*.spec
+generated/
+launcher.settings.json
+.padra-backends.json
+*.bak
+.pytest_cache/

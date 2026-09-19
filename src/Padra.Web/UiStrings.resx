@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="a11y.skip" xml:space="preserve">
+    <value>Skip to the main content</value>
+  </data>
+  <data name="app.subtitle" xml:space="preserve">
+    <value>Local Unsloth gateway for Codex, Qwen Code, Claude Code and VS Code</value>
+  </data>
+  <data name="app.title" xml:space="preserve">
+    <value>Padra Platform Launcher</value>
+  </data>
+  <data name="aria.activate" xml:space="preserve">
+    <value>Make {0} the active model</value>
+  </data>
+  <data name="aria.language" xml:space="preserve">
+    <value>Interface language</value>
+  </data>
+  <data name="aria.launch_model" xml:space="preserve">
+    <value>Model to launch the agent with</value>
+  </data>
+  <data name="aria.library_tabs" xml:space="preserve">
+    <value>Model library source</value>
+  </data>
+  <data name="aria.mode" xml:space="preserve">
+    <value>Model loading mode</value>
+  </data>
+  <data name="aria.runtime" xml:space="preserve">
+    <value>Runtime settings for {0}</value>
+  </data>
+  <data name="aria.status" xml:space="preserve">
+    <value>Gateway status</value>
+  </data>
+  <data name="btn.add_to_fleet" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="btn.apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="btn.cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="btn.check" xml:space="preserve">
+    <value>Check again</value>
+  </data>
+  <data name="btn.clear_log" xml:space="preserve">
+    <value>Clear log</value>
+  </data>
+  <data name="btn.copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="btn.copy_command" xml:space="preserve">
+    <value>Copy command</value>
+  </data>
+  <data name="btn.copy_key" xml:space="preserve">
+    <value>Copy key</value>
+  </data>
+  <data name="btn.copy_url" xml:space="preserve">
+    <value>Copy URL</value>
+  </data>
+  <data name="btn.download_bundle" xml:space="preserve">
+    <value>Download config bundle</value>
+  </data>
+  <data name="btn.firewall" xml:space="preserve">
+    <value>Allow through the firewall</value>
+  </data>
+  <data name="btn.in_fleet" xml:space="preserve">
+    <value>Added</value>
+  </data>
+  <data name="btn.install_configs" xml:space="preserve">
+    <value>Install client configuration</value>
+  </data>
+  <data name="btn.load" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="btn.open_claude" xml:space="preserve">
+    <value>Open in Claude Code</value>
+  </data>
+  <data name="btn.open_codex" xml:space="preserve">
+    <value>Open in Codex</value>
+  </data>
+  <data name="btn.open_qwen" xml:space="preserve">
+    <value>Open in Qwen Code</value>
+  </data>
+  <data name="btn.refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="btn.remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="btn.rescan" xml:space="preserve">
+    <value>Rescan disk</value>
+  </data>
+  <data name="btn.restore_configs" xml:space="preserve">
+    <value>Restore original configuration</value>
+  </data>
+  <data name="btn.runtime" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="btn.save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="btn.search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="btn.tune" xml:space="preserve">
+    <value>Tune for this machine</value>
+  </data>
+  <data name="btn.unload" xml:space="preserve">
+    <value>Unload</value>
+  </data>
+  <data name="btn.variants" xml:space="preserve">
+    <value>Show variants</value>
+  </data>
+  <data name="client.claude" xml:space="preserve">
+    <value>Claude Code</value>
+  </data>
+  <data name="client.codex" xml:space="preserve">
+    <value>Codex</value>
+  </data>
+  <data name="client.continue" xml:space="preserve">
+    <value>Continue (VS Code)</value>
+  </data>
+  <data name="client.qwen" xml:space="preserve">
+    <value>Qwen Code</value>
+  </data>
+  <data name="client.vscode" xml:space="preserve">
+    <value>VS Code and Copilot Chat</value>
+  </data>
+  <data name="confirm.remove_model" xml:space="preserve">
+    <value>Remove {0} from the gateway?</value>
+  </data>
+  <data name="culture.en-US" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="culture.fa-IR" xml:space="preserve">
+    <value>فارسی</value>
+  </data>
+  <data name="dialog.install.body" xml:space="preserve">
+    <value>Write the provider settings into the configuration folders of the selected agents? Existing files are backed up with a .bak extension.</value>
+  </data>
+  <data name="dialog.missing.claude" xml:space="preserve">
+    <value>The 'claude' command is not on PATH. Install it with: npm install -g @anthropic-ai/claude-code</value>
+  </data>
+  <data name="dialog.missing.codex" xml:space="preserve">
+    <value>The 'codex' command is not on PATH. Install it with: winget install --id OpenAI.Codex</value>
+  </data>
+  <data name="dialog.missing.qwen" xml:space="preserve">
+    <value>The 'qwen' command is not on PATH. Install it with: npm install -g @qwen-code/qwen-code</value>
+  </data>
+  <data name="empty.catalog" xml:space="preserve">
+    <value>Search the Unsloth catalog to list models.</value>
+  </data>
+  <data name="empty.fleet" xml:space="preserve">
+    <value>No models yet. Add one from the library below.</value>
+  </data>
+  <data name="empty.fleet_short" xml:space="preserve">
+    <value>No models</value>
+  </data>
+  <data name="empty.hardware" xml:space="preserve">
+    <value>Add a model to see what it needs.</value>
+  </data>
+  <data name="empty.local" xml:space="preserve">
+    <value>Nothing downloaded yet. Use the catalog tab to pick a model.</value>
+  </data>
+  <data name="empty.log" xml:space="preserve">
+    <value>No activity yet.</value>
+  </data>
+  <data name="error.clipboard" xml:space="preserve">
+    <value>The clipboard is not available. Copy this manually: {0}</value>
+  </data>
+  <data name="error.endpoint_unavailable" xml:space="preserve">
+    <value>That endpoint cannot be configured right now: {0}</value>
+  </data>
+  <data name="error.firewall" xml:space="preserve">
+    <value>The firewall rule was not added. Run this as an administrator: {0}</value>
+  </data>
+  <data name="error.folder" xml:space="preserve">
+    <value>That folder does not exist: {0}</value>
+  </data>
+  <data name="error.install_failed" xml:space="preserve">
+    <value>Configuration failed for: {0}</value>
+  </data>
+  <data name="error.no_key_for_lan" xml:space="preserve">
+    <value>Set a gateway API key before sharing on the network.</value>
+  </data>
+  <data name="error.no_model" xml:space="preserve">
+    <value>Add a model to the gateway first.</value>
+  </data>
+  <data name="error.no_targets" xml:space="preserve">
+    <value>Select at least one agent to configure.</value>
+  </data>
+  <data name="error.not_found" xml:space="preserve">
+    <value>Page not found</value>
+  </data>
+  <data name="error.not_found_body" xml:space="preserve">
+    <value>That address does not exist in the control panel.</value>
+  </data>
+  <data name="error.offline" xml:space="preserve">
+    <value>The gateway is not responding. It may still be starting.</value>
+  </data>
+  <data name="error.request" xml:space="preserve">
+    <value>The request failed: {0}</value>
+  </data>
+  <data name="error.restore_failed" xml:space="preserve">
+    <value>The configuration could not be restored: {0}</value>
+  </data>
+  <data name="fit.cpu" xml:space="preserve">
+    <value>Runs on the processor</value>
+  </data>
+  <data name="fit.disk" xml:space="preserve">
+    <value>Served from disk</value>
+  </data>
+  <data name="fit.gpu" xml:space="preserve">
+    <value>Fits in the graphics card</value>
+  </data>
+  <data name="fit.offload" xml:space="preserve">
+    <value>Served from system memory</value>
+  </data>
+  <data name="fit.unknown" xml:space="preserve">
+    <value>Not measured</value>
+  </data>
+  <data name="footer.models_loaded" xml:space="preserve">
+    <value>{0} of {1} models loaded</value>
+  </data>
+  <data name="footer.never" xml:space="preserve">
+    <value>Not connected yet</value>
+  </data>
+  <data name="footer.updated" xml:space="preserve">
+    <value>Updated {0}</value>
+  </data>
+  <data name="format.list_separator" xml:space="preserve">
+    <value>, </value>
+  </data>
+  <data name="gpumode.auto" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="gpumode.manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="hint.allow_oversize" xml:space="preserve">
+    <value>Leave this on to start a model this machine cannot hold in graphics memory. It runs more slowly rather than not at all.</value>
+  </data>
+  <data name="hint.clients" xml:space="preserve">
+    <value>Writes the endpoint, key and model list into each agent's own configuration file.</value>
+  </data>
+  <data name="hint.full_tool_access" xml:space="preserve">
+    <value>Dangerous: lets supported agents call tools without approval and disables their sandbox. Use only with agents and projects you trust.</value>
+  </data>
+  <data name="hint.endpoint" xml:space="preserve">
+    <value>Unsloth's own server already answers the OpenAI and Anthropic APIs on one port, so the agents can talk to it directly. The gateway puts one endpoint in front of every model here and swaps them on demand.</value>
+  </data>
+  <data name="hint.firewall" xml:space="preserve">
+    <value>Other machines also need the firewall to allow the port: {0}</value>
+  </data>
+  <data name="hint.hardware" xml:space="preserve">
+    <value>What each model needs, measured against this machine. Nothing here stops a model from running: one larger than the graphics memory is served from system memory instead.</value>
+  </data>
+  <data name="hint.local_only" xml:space="preserve">
+    <value>The gateway is only reachable from this computer.</value>
+  </data>
+  <data name="hint.make_default" xml:space="preserve">
+    <value>The Codex and Qwen Code editor extensions expose no endpoint setting, so this is what points them here. Turned off, your own defaults are left alone and only the provider is added.</value>
+  </data>
+  <data name="hint.mode" xml:space="preserve">
+    <value>Exclusive keeps a single model in VRAM and swaps on demand.</value>
+  </data>
+  <data name="hint.network" xml:space="preserve">
+    <value>Sharing binds the gateway to every network interface so other machines can use it.</value>
+  </data>
+  <data name="hint.restore" xml:space="preserve">
+    <value>Puts Codex, Qwen Code, Claude Code, Continue and VS Code back exactly as they were before this launcher first changed them.</value>
+  </data>
+  <data name="hint.serve.gateway" xml:space="preserve">
+    <value>One endpoint, every model in the list, chosen per request and swapped automatically.</value>
+  </data>
+  <data name="hint.serve.unsloth" xml:space="preserve">
+    <value>The agents talk to Unsloth directly — on this computer or another machine — and this launcher stays out of the request path. Unsloth keeps one model resident at a time; pick it and load it below.</value>
+  </data>
+  <data name="hint.unsloth_start" xml:space="preserve">
+    <value>Start it with this command, then check again:</value>
+  </data>
+  <data name="hint.unsloth_tools" xml:space="preserve">
+    <value>`--disable-tools` matters: Unsloth runs its own tools by default and they swallow a coding agent's tool calls, so the agent answers but never edits a file.</value>
+  </data>
+  <data name="label.actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="label.allow_oversize" xml:space="preserve">
+    <value>Run models larger than this hardware</value>
+  </data>
+  <data name="label.context_length" xml:space="preserve">
+    <value>Context length</value>
+  </data>
+  <data name="label.cpu_moe" xml:space="preserve">
+    <value>Expert layers in system memory</value>
+  </data>
+  <data name="label.endpoint" xml:space="preserve">
+    <value>Endpoint</value>
+  </data>
+  <data name="label.endpoint_source" xml:space="preserve">
+    <value>Serve through</value>
+  </data>
+  <data name="label.fit" xml:space="preserve">
+    <value>Shrink to fit</value>
+  </data>
+  <data name="label.fit_context" xml:space="preserve">
+    <value>Smallest context when shrinking</value>
+  </data>
+  <data name="label.flash_attention" xml:space="preserve">
+    <value>Flash attention</value>
+  </data>
+  <data name="label.gpu_layers" xml:space="preserve">
+    <value>Layers on the graphics card</value>
+  </data>
+  <data name="label.gpu_mode" xml:space="preserve">
+    <value>Placement</value>
+  </data>
+  <data name="label.graphics_memory" xml:space="preserve">
+    <value>Graphics memory</value>
+  </data>
+  <data name="label.idle_timeout" xml:space="preserve">
+    <value>Free VRAM after (seconds)</value>
+  </data>
+  <data name="label.key_source" xml:space="preserve">
+    <value>Key from</value>
+  </data>
+  <data name="label.kv_cache" xml:space="preserve">
+    <value>Cache precision</value>
+  </data>
+  <data name="label.language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="label.local_url" xml:space="preserve">
+    <value>This computer</value>
+  </data>
+  <data name="label.make_default" xml:space="preserve">
+    <value>Make this the default for every agent</value>
+  </data>
+  <data name="label.full_tool_access" xml:space="preserve">
+    <value>Allow unrestricted tool access</value>
+  </data>
+  <data name="label.mode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="label.model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="label.no_gpu" xml:space="preserve">
+    <value>No graphics card was detected</value>
+  </data>
+  <data name="label.no_kv_offload" xml:space="preserve">
+    <value>Keep the cache in system memory</value>
+  </data>
+  <data name="label.port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="label.project_folder" xml:space="preserve">
+    <value>Project folder</value>
+  </data>
+  <data name="label.scope" xml:space="preserve">
+    <value>Address to write</value>
+  </data>
+  <data name="label.client_model" xml:space="preserve">
+    <value>Default model for coding agents</value>
+  </data>
+  <data name="label.search" xml:space="preserve">
+    <value>Search the Unsloth catalog</value>
+  </data>
+  <data name="label.share_lan" xml:space="preserve">
+    <value>Share with the local network</value>
+  </data>
+  <data name="label.swa_full" xml:space="preserve">
+    <value>Full sliding-window cache</value>
+  </data>
+  <data name="label.system_memory" xml:space="preserve">
+    <value>System memory</value>
+  </data>
+  <data name="label.targets" xml:space="preserve">
+    <value>Configure</value>
+  </data>
+  <data name="label.threads" xml:space="preserve">
+    <value>Threads</value>
+  </data>
+  <data name="label.unsloth_key" xml:space="preserve">
+    <value>API key</value>
+  </data>
+  <data name="label.unsloth_server" xml:space="preserve">
+    <value>Unsloth server</value>
+  </data>
+  <data name="label.unsloth_url" xml:space="preserve">
+    <value>Server address</value>
+  </data>
+  <data name="loading" xml:space="preserve">
+    <value>Loading…</value>
+  </data>
+  <data name="log.activating" xml:space="preserve">
+    <value>Activating {0}…</value>
+  </data>
+  <data name="log.bundle_saved" xml:space="preserve">
+    <value>Client configuration bundle downloaded.</value>
+  </data>
+  <data name="log.copied_key" xml:space="preserve">
+    <value>API key copied to the clipboard.</value>
+  </data>
+  <data name="log.copied_url" xml:space="preserve">
+    <value>Endpoint copied to the clipboard.</value>
+  </data>
+  <data name="log.language_changed" xml:space="preserve">
+    <value>Interface language changed to {0}.</value>
+  </data>
+  <data name="log.launched" xml:space="preserve">
+    <value>Launched {0} with model {1} in {2}.</value>
+  </data>
+  <data name="log.loading_model" xml:space="preserve">
+    <value>Loading {0}. The first load can take a few minutes.</value>
+  </data>
+  <data name="log.mode_changed" xml:space="preserve">
+    <value>Switching mode to {0}…</value>
+  </data>
+  <data name="log.model_ok" xml:space="preserve">
+    <value>{0}: done.</value>
+  </data>
+  <data name="log.model_removed" xml:space="preserve">
+    <value>{0} was removed from the gateway.</value>
+  </data>
+  <data name="log.no_terminal" xml:space="preserve">
+    <value>No terminal was found. Run this script manually: {0}</value>
+  </data>
+  <data name="log.unloading_model" xml:space="preserve">
+    <value>Unloading {0}…</value>
+  </data>
+  <data name="mode.concurrent" xml:space="preserve">
+    <value>Concurrent (keep all loaded)</value>
+  </data>
+  <data name="mode.exclusive" xml:space="preserve">
+    <value>Exclusive (one model at a time)</value>
+  </data>
+  <data name="notice.activated" xml:space="preserve">
+    <value>{0} is now the active model.</value>
+  </data>
+  <data name="notice.endpoint_saved" xml:space="preserve">
+    <value>The agents will be configured for {0}.</value>
+  </data>
+  <data name="notice.firewall_added" xml:space="preserve">
+    <value>The firewall rule was added.</value>
+  </data>
+  <data name="notice.install_ok" xml:space="preserve">
+    <value>Configuration written to {0} files, pointing at {1}.</value>
+  </data>
+  <data name="notice.model_added" xml:space="preserve">
+    <value>{0} was added to the gateway.</value>
+  </data>
+  <data name="notice.restart_required" xml:space="preserve">
+    <value>Saved. Restart the launcher to listen on the new address.</value>
+  </data>
+  <data name="notice.restore_nothing" xml:space="preserve">
+    <value>There was nothing to restore.</value>
+  </data>
+  <data name="notice.restore_ok" xml:space="preserve">
+    <value>{0} file(s) were put back as they were.</value>
+  </data>
+  <data name="notice.runtime_saved" xml:space="preserve">
+    <value>Runtime settings saved for {0}.</value>
+  </data>
+  <data name="notice.runtime_tuned" xml:space="preserve">
+    <value>{0} was tuned for this machine.</value>
+  </data>
+  <data name="notice.saved" xml:space="preserve">
+    <value>Saved.</value>
+  </data>
+  <data name="option.model_default" xml:space="preserve">
+    <value>{0} (default)</value>
+  </data>
+  <data name="placeholder.project_folder" xml:space="preserve">
+    <value>D:\Projects\MyApp</value>
+  </data>
+  <data name="placeholder.search" xml:space="preserve">
+    <value>qwen3 coder</value>
+  </data>
+  <data name="placeholder.unsloth_key" xml:space="preserve">
+    <value>found automatically — paste one, or sign in below to create one</value>
+  </data>
+  <data name="placeholder.unsloth_url" xml:space="preserve">
+    <value>http://127.0.0.1:8888 or http://192.168.1.20:8888</value>
+  </data>
+  <data name="scope.lan" xml:space="preserve">
+    <value>Local network address</value>
+  </data>
+  <data name="scope.local" xml:space="preserve">
+    <value>This computer only</value>
+  </data>
+  <data name="section.clients" xml:space="preserve">
+    <value>Coding agents</value>
+  </data>
+  <data name="section.endpoint" xml:space="preserve">
+    <value>Where the agents send their requests</value>
+  </data>
+  <data name="section.fleet" xml:space="preserve">
+    <value>Models in the gateway</value>
+  </data>
+  <data name="section.hardware" xml:space="preserve">
+    <value>Hardware and offload</value>
+  </data>
+  <data name="section.library" xml:space="preserve">
+    <value>Model library</value>
+  </data>
+  <data name="section.log" xml:space="preserve">
+    <value>Activity log</value>
+  </data>
+  <data name="section.network" xml:space="preserve">
+    <value>Network</value>
+  </data>
+  <data name="serve.gateway" xml:space="preserve">
+    <value>This launcher's gateway</value>
+  </data>
+  <data name="serve.unsloth" xml:space="preserve">
+    <value>Unsloth's server, directly</value>
+  </data>
+  <data name="source.folder" xml:space="preserve">
+    <value>Custom folder</value>
+  </data>
+  <data name="source.huggingface" xml:space="preserve">
+    <value>Hugging Face cache</value>
+  </data>
+  <data name="source.lmstudio" xml:space="preserve">
+    <value>LM Studio</value>
+  </data>
+  <data name="state.attached" xml:space="preserve">
+    <value>Attached</value>
+  </data>
+  <data name="state.downloaded" xml:space="preserve">
+    <value>Downloaded</value>
+  </data>
+  <data name="state.failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="state.idle" xml:space="preserve">
+    <value>Idle</value>
+  </data>
+  <data name="state.loaded" xml:space="preserve">
+    <value>Loaded</value>
+  </data>
+  <data name="state.remote" xml:space="preserve">
+    <value>Not downloaded</value>
+  </data>
+  <data name="state.unsloth_no_key" xml:space="preserve">
+    <value>No key found</value>
+  </data>
+  <data name="state.unsloth_no_models" xml:space="preserve">
+    <value>No models listed</value>
+  </data>
+  <data name="state.unsloth_ready" xml:space="preserve">
+    <value>Serving {0} model(s)</value>
+  </data>
+  <data name="state.unsloth_unauthorised" xml:space="preserve">
+    <value>Key refused</value>
+  </data>
+  <data name="state.unsloth_unreachable" xml:space="preserve">
+    <value>Not answering</value>
+  </data>
+  <data name="status.running_idle" xml:space="preserve">
+    <value>Running — no model loaded</value>
+  </data>
+  <data name="status.running_with" xml:space="preserve">
+    <value>Running — {0}</value>
+  </data>
+  <data name="status.starting" xml:space="preserve">
+    <value>Starting…</value>
+  </data>
+  <data name="status.stopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="summary.estimate_note" xml:space="preserve">
+    <value>The cache size is an estimate: this model's header does not describe its shape.</value>
+  </data>
+  <data name="summary.footprint" xml:space="preserve">
+    <value>{0} weights, {1} cache, {2} working memory</value>
+  </data>
+  <data name="summary.gpu" xml:space="preserve">
+    <value>{0} — {1}</value>
+  </data>
+  <data name="summary.hardware" xml:space="preserve">
+    <value>{0} of system memory</value>
+  </data>
+  <data name="summary.local" xml:space="preserve">
+    <value>{0} downloaded variants, {1} on disk.</value>
+  </data>
+  <data name="summary.local_empty" xml:space="preserve">
+    <value>No downloaded models were found in the Hugging Face cache.</value>
+  </data>
+  <data name="summary.shortfall" xml:space="preserve">
+    <value>{0} more than the largest graphics card holds; that part is served from system memory.</value>
+  </data>
+  <data name="tab.catalog" xml:space="preserve">
+    <value>Unsloth catalog</value>
+  </data>
+  <data name="tab.downloaded" xml:space="preserve">
+    <value>Downloaded</value>
+  </data>
+  <data name="table.active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="table.alias" xml:space="preserve">
+    <value>Alias</value>
+  </data>
+  <data name="table.context" xml:space="preserve">
+    <value>Context</value>
+  </data>
+  <data name="table.downloads" xml:space="preserve">
+    <value>Downloads</value>
+  </data>
+  <data name="table.estimated_size" xml:space="preserve">
+    <value>Estimated size</value>
+  </data>
+  <data name="table.fit" xml:space="preserve">
+    <value>Fits</value>
+  </data>
+  <data name="table.loaded" xml:space="preserve">
+    <value>Resident</value>
+  </data>
+  <data name="table.model" xml:space="preserve">
+    <value>Model</value>
+  </data>
+  <data name="table.port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="table.quant" xml:space="preserve">
+    <value>Quantisation</value>
+  </data>
+  <data name="table.size" xml:space="preserve">
+    <value>Size on disk</value>
+  </data>
+  <data name="table.source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="table.state" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="title.variants" xml:space="preserve">
+    <value>Variants of {0}</value>
+  </data>
+  <data name="toggle.auto" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="toggle.off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="toggle.on" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="unit.byte" xml:space="preserve">
+    <value>{0} B</value>
+  </data>
+  <data name="unit.gib" xml:space="preserve">
+    <value>{0} GiB</value>
+  </data>
+  <data name="unit.kib" xml:space="preserve">
+    <value>{0} KiB</value>
+  </data>
+  <data name="unit.mib" xml:space="preserve">
+    <value>{0} MiB</value>
+  </data>
+  <data name="unit.tib" xml:space="preserve">
+    <value>{0} TiB</value>
+  </data>
+  <data name="value.all" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="value.automatic" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="value.no" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="value.none" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="value.unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="value.yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="warn.agents_missing" xml:space="preserve">
+    <value>Not installed: {0}</value>
+  </data>
+  <data name="warn.unsloth_missing" xml:space="preserve">
+    <value>The 'unsloth' command was not found on PATH.</value>
+  </data>
+  <data name="aria.nav" xml:space="preserve">
+    <value>Panel sections</value>
+  </data>
+  <data name="label.busy" xml:space="preserve">
+    <value>Working…</value>
+  </data>
+  <data name="gs.title" xml:space="preserve">
+    <value>Get started in three steps</value>
+  </data>
+  <data name="gs.step1" xml:space="preserve">
+    <value>Add a model — pick one from Downloaded or the Unsloth catalog below, or enter a repository by hand.</value>
+  </data>
+  <data name="gs.step2" xml:space="preserve">
+    <value>Choose where the agents send their requests — this gateway, or Unsloth's own server.</value>
+  </data>
+  <data name="gs.step3" xml:space="preserve">
+    <value>Install the client configuration — Codex, Qwen Code and Claude Code are pointed at your model with one click.</value>
+  </data>
+  <data name="title.add_manual" xml:space="preserve">
+    <value>Add a model by repository</value>
+  </data>
+  <data name="label.repo" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="label.quant" xml:space="preserve">
+    <value>Quantisation (optional)</value>
+  </data>
+  <data name="label.alias" xml:space="preserve">
+    <value>Alias (optional)</value>
+  </data>
+  <data name="placeholder.repo" xml:space="preserve">
+    <value>unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF</value>
+  </data>
+  <data name="placeholder.alias" xml:space="preserve">
+    <value>qwen3-coder</value>
+  </data>
+  <data name="btn.add_manual" xml:space="preserve">
+    <value>Add model</value>
+  </data>
+  <data name="error.repo_required" xml:space="preserve">
+    <value>Enter the model repository first, e.g. unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF.</value>
+  </data>
+  <data name="confirm.restore" xml:space="preserve">
+    <value>Put the selected agents back exactly as they were before this launcher configured them?</value>
+  </data>
+  <data name="label.report" xml:space="preserve">
+    <value>What the last install changed</value>
+  </data>
+  <data name="state.unsloth_loading" xml:space="preserve">
+    <value>Loading {0}…</value>
+  </data>
+  <data name="state.unsloth_nothing_resident" xml:space="preserve">
+    <value>{0} model(s) on disk, none resident</value>
+  </data>
+  <data name="state.loading" xml:space="preserve">
+    <value>Loading…</value>
+  </data>
+  <data name="state.on_disk" xml:space="preserve">
+    <value>On disk</value>
+  </data>
+  <data name="progress.unloading" xml:space="preserve">
+    <value>Unloading {0}…</value>
+  </data>
+  <data name="progress.loading" xml:space="preserve">
+    <value>Loading {0} on the server — a large model takes minutes.</value>
+  </data>
+  <data name="progress.loading_bytes" xml:space="preserve">
+    <value>Loading {0} — {1}% ({2} of {3})</value>
+  </data>
+  <data name="error.sign_in_required" xml:space="preserve">
+    <value>Enter the Unsloth Studio username and password to create a key.</value>
+  </data>
+  <data name="error.sign_in_failed" xml:space="preserve">
+    <value>The key could not be created: {0}</value>
+  </data>
+  <data name="notice.key_created" xml:space="preserve">
+    <value>An API key was created on {0} and saved. The agents will use it.</value>
+  </data>
+  <data name="notice.unsloth_selected" xml:space="preserve">
+    <value>The agents will be configured with {0}.</value>
+  </data>
+  <data name="log.unsloth_loading" xml:space="preserve">
+    <value>Asked the Unsloth server to load {0}.</value>
+  </data>
+  <data name="log.unsloth_unloading" xml:space="preserve">
+    <value>Asked the Unsloth server to unload {0}.</value>
+  </data>
+  <data name="notice.unsloth_loaded" xml:space="preserve">
+    <value>{0} is resident on the Unsloth server.</value>
+  </data>
+  <data name="notice.unsloth_unloaded" xml:space="preserve">
+    <value>{0} was unloaded from the Unsloth server.</value>
+  </data>
+  <data name="error.unsloth_operation" xml:space="preserve">
+    <value>The Unsloth server could not do that for {0}: {1}</value>
+  </data>
+  <data name="error.no_unsloth_model" xml:space="preserve">
+    <value>Pick a model the Unsloth server lists first.</value>
+  </data>
+  <data name="warn.unsloth_not_resident" xml:space="preserve">
+    <value>{0} is not resident on the server yet — press Load, or the agents will have nothing to talk to.</value>
+  </data>
+  <data name="gs.direct.title" xml:space="preserve">
+    <value>Get started with Unsloth's own server</value>
+  </data>
+  <data name="gs.direct.step1" xml:space="preserve">
+    <value>Enter the server address below — on this computer, or another machine on the network — and press Apply.</value>
+  </data>
+  <data name="gs.direct.step2" xml:space="preserve">
+    <value>Give it a key: paste one, or sign in with the Unsloth Studio username and password and let the launcher create one.</value>
+  </data>
+  <data name="gs.direct.step3" xml:space="preserve">
+    <value>Pick the model the agents should use and press Load so the server brings it into memory.</value>
+  </data>
+  <data name="gs.direct.step4" xml:space="preserve">
+    <value>Install the client configuration — Codex, Qwen Code and Claude Code are pointed at that model with one click.</value>
+  </data>
+  <data name="title.sign_in" xml:space="preserve">
+    <value>Create a key by signing in</value>
+  </data>
+  <data name="hint.sign_in" xml:space="preserve">
+    <value>Unsloth Studio stores its keys hashed, so an existing key cannot be read back. Sign in with the Studio username and password once and a key named "Padra Platform Launcher" is created for the agents. The password is used for that one request and never stored.</value>
+  </data>
+  <data name="label.username" xml:space="preserve">
+    <value>Studio username</value>
+  </data>
+  <data name="label.password" xml:space="preserve">
+    <value>Studio password</value>
+  </data>
+  <data name="btn.create_key" xml:space="preserve">
+    <value>Sign in and create a key</value>
+  </data>
+  <data name="hint.unsloth_pick" xml:space="preserve">
+    <value>The server keeps one model resident at a time. Choose the one the agents should use; Load brings it into memory on the server, wherever it runs.</value>
+  </data>
+  <data name="aria.use_model" xml:space="preserve">
+    <value>Configure the agents with {0}</value>
+  </data>
+  <data name="hint.unsloth_remote_empty" xml:space="preserve">
+    <value>The server lists no models yet. Download one in Unsloth Studio on that machine, then check again.</value>
+  </data>
+  <data name="hint.unsloth_remote_start" xml:space="preserve">
+    <value>Nothing is answering at that address. Start Unsloth Studio on that machine, turn on LAN access in its settings, and check the firewall there.</value>
+  </data>
+  <data name="empty.unsloth_short" xml:space="preserve">
+    <value>No models on the server</value>
+  </data>
+  <data name="hint.direct_target" xml:space="preserve">
+    <value>The agents are written for {0} with model {1}.</value>
+  </data>
+  <data name="hint.direct_no_target" xml:space="preserve">
+    <value>The agents will be written for {0} once that server lists a model.</value>
+  </data>
+</root>

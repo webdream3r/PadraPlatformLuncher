@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="a11y.skip" xml:space="preserve">
+    <value>پرش به محتوای اصلی</value>
+  </data>
+  <data name="app.subtitle" xml:space="preserve">
+    <value>دروازهٔ محلی Unsloth برای Codex، Qwen Code، Claude Code و VS Code</value>
+  </data>
+  <data name="app.title" xml:space="preserve">
+    <value>راه‌انداز پلتفرم پادرا</value>
+  </data>
+  <data name="aria.activate" xml:space="preserve">
+    <value>{0} مدل فعال شود</value>
+  </data>
+  <data name="aria.language" xml:space="preserve">
+    <value>زبان رابط کاربری</value>
+  </data>
+  <data name="aria.launch_model" xml:space="preserve">
+    <value>مدلی که دستیار با آن اجرا می‌شود</value>
+  </data>
+  <data name="aria.library_tabs" xml:space="preserve">
+    <value>منبع کتابخانهٔ مدل‌ها</value>
+  </data>
+  <data name="aria.mode" xml:space="preserve">
+    <value>حالت بارگذاری مدل</value>
+  </data>
+  <data name="aria.runtime" xml:space="preserve">
+    <value>تنظیمات اجرا برای {0}</value>
+  </data>
+  <data name="aria.status" xml:space="preserve">
+    <value>وضعیت سرویس</value>
+  </data>
+  <data name="btn.add_to_fleet" xml:space="preserve">
+    <value>افزودن</value>
+  </data>
+  <data name="btn.apply" xml:space="preserve">
+    <value>اعمال</value>
+  </data>
+  <data name="btn.cancel" xml:space="preserve">
+    <value>انصراف</value>
+  </data>
+  <data name="btn.check" xml:space="preserve">
+    <value>بررسی دوباره</value>
+  </data>
+  <data name="btn.clear_log" xml:space="preserve">
+    <value>پاک‌کردن گزارش</value>
+  </data>
+  <data name="btn.copy" xml:space="preserve">
+    <value>کپی</value>
+  </data>
+  <data name="btn.copy_command" xml:space="preserve">
+    <value>رونوشت فرمان</value>
+  </data>
+  <data name="btn.copy_key" xml:space="preserve">
+    <value>کپی کلید</value>
+  </data>
+  <data name="btn.copy_url" xml:space="preserve">
+    <value>کپی نشانی</value>
+  </data>
+  <data name="btn.download_bundle" xml:space="preserve">
+    <value>دریافت بستهٔ تنظیمات</value>
+  </data>
+  <data name="btn.firewall" xml:space="preserve">
+    <value>اجازه در دیوارهٔ آتش</value>
+  </data>
+  <data name="btn.in_fleet" xml:space="preserve">
+    <value>افزوده‌شده</value>
+  </data>
+  <data name="btn.install_configs" xml:space="preserve">
+    <value>نصب تنظیمات کلاینت‌ها</value>
+  </data>
+  <data name="btn.load" xml:space="preserve">
+    <value>بارگذاری</value>
+  </data>
+  <data name="btn.open_claude" xml:space="preserve">
+    <value>اجرا در Claude Code</value>
+  </data>
+  <data name="btn.open_codex" xml:space="preserve">
+    <value>اجرا در Codex</value>
+  </data>
+  <data name="btn.open_qwen" xml:space="preserve">
+    <value>اجرا در Qwen Code</value>
+  </data>
+  <data name="btn.refresh" xml:space="preserve">
+    <value>به‌روزرسانی</value>
+  </data>
+  <data name="btn.remove" xml:space="preserve">
+    <value>حذف</value>
+  </data>
+  <data name="btn.rescan" xml:space="preserve">
+    <value>پویش دوبارهٔ دیسک</value>
+  </data>
+  <data name="btn.restore_configs" xml:space="preserve">
+    <value>بازگرداندن پیکربندی اصلی</value>
+  </data>
+  <data name="btn.runtime" xml:space="preserve">
+    <value>تنظیمات</value>
+  </data>
+  <data name="btn.save" xml:space="preserve">
+    <value>ذخیره</value>
+  </data>
+  <data name="btn.search" xml:space="preserve">
+    <value>جست‌وجو</value>
+  </data>
+  <data name="btn.tune" xml:space="preserve">
+    <value>تنظیم برای این دستگاه</value>
+  </data>
+  <data name="btn.unload" xml:space="preserve">
+    <value>تخلیه</value>
+  </data>
+  <data name="btn.variants" xml:space="preserve">
+    <value>نمایش گونه‌ها</value>
+  </data>
+  <data name="client.claude" xml:space="preserve">
+    <value>Claude Code</value>
+  </data>
+  <data name="client.codex" xml:space="preserve">
+    <value>Codex</value>
+  </data>
+  <data name="client.continue" xml:space="preserve">
+    <value>Continue (افزونهٔ VS Code)</value>
+  </data>
+  <data name="client.qwen" xml:space="preserve">
+    <value>Qwen Code</value>
+  </data>
+  <data name="client.vscode" xml:space="preserve">
+    <value>VS Code و Copilot Chat</value>
+  </data>
+  <data name="confirm.remove_model" xml:space="preserve">
+    <value>مدل {0} از دروازه حذف شود؟</value>
+  </data>
+  <data name="culture.en-US" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="culture.fa-IR" xml:space="preserve">
+    <value>فارسی</value>
+  </data>
+  <data name="dialog.install.body" xml:space="preserve">
+    <value>تنظیمات ارائه‌دهنده در پوشه‌های پیکربندی دستیارهای انتخاب‌شده نوشته شود؟ از فایل‌های موجود نسخهٔ پشتیبان با پسوند .bak گرفته می‌شود.</value>
+  </data>
+  <data name="dialog.missing.claude" xml:space="preserve">
+    <value>دستور claude در PATH یافت نشد. برای نصب: npm install -g @anthropic-ai/claude-code</value>
+  </data>
+  <data name="dialog.missing.codex" xml:space="preserve">
+    <value>دستور codex در PATH یافت نشد. برای نصب: winget install --id OpenAI.Codex</value>
+  </data>
+  <data name="dialog.missing.qwen" xml:space="preserve">
+    <value>دستور qwen در PATH یافت نشد. برای نصب: npm install -g @qwen-code/qwen-code</value>
+  </data>
+  <data name="empty.catalog" xml:space="preserve">
+    <value>برای دیدن مدل‌ها، فهرست Unsloth را جست‌وجو کنید.</value>
+  </data>
+  <data name="empty.fleet" xml:space="preserve">
+    <value>هنوز مدلی افزوده نشده است. از کتابخانهٔ پایین یکی را اضافه کنید.</value>
+  </data>
+  <data name="empty.fleet_short" xml:space="preserve">
+    <value>بدون مدل</value>
+  </data>
+  <data name="empty.hardware" xml:space="preserve">
+    <value>برای دیدن نیاز مدل، یک مدل اضافه کنید.</value>
+  </data>
+  <data name="empty.local" xml:space="preserve">
+    <value>هنوز چیزی دانلود نشده است. از زبانهٔ فهرست، مدلی را انتخاب کنید.</value>
+  </data>
+  <data name="empty.log" xml:space="preserve">
+    <value>هنوز فعالیتی ثبت نشده است.</value>
+  </data>
+  <data name="error.clipboard" xml:space="preserve">
+    <value>حافظهٔ موقت در دسترس نیست. این را دستی کپی کنید: {0}</value>
+  </data>
+  <data name="error.endpoint_unavailable" xml:space="preserve">
+    <value>این نقطه‌پایانی اکنون پیکربندی‌پذیر نیست: {0}</value>
+  </data>
+  <data name="error.firewall" xml:space="preserve">
+    <value>قاعدهٔ دیوارهٔ آتش افزوده نشد. این فرمان را با دسترسی مدیر اجرا کنید: {0}</value>
+  </data>
+  <data name="error.folder" xml:space="preserve">
+    <value>این پوشه وجود ندارد: {0}</value>
+  </data>
+  <data name="error.install_failed" xml:space="preserve">
+    <value>پیکربندی برای این موارد ناموفق بود: {0}</value>
+  </data>
+  <data name="error.no_key_for_lan" xml:space="preserve">
+    <value>پیش از اشتراک‌گذاری در شبکه، یک کلید دسترسی تنظیم کنید.</value>
+  </data>
+  <data name="error.no_model" xml:space="preserve">
+    <value>نخست یک مدل به دروازه اضافه کنید.</value>
+  </data>
+  <data name="error.no_targets" xml:space="preserve">
+    <value>دست‌کم یک دستیار را برای پیکربندی انتخاب کنید.</value>
+  </data>
+  <data name="error.not_found" xml:space="preserve">
+    <value>صفحه یافت نشد</value>
+  </data>
+  <data name="error.not_found_body" xml:space="preserve">
+    <value>این نشانی در پنل کنترل وجود ندارد.</value>
+  </data>
+  <data name="error.offline" xml:space="preserve">
+    <value>سرویس پاسخ نمی‌دهد. ممکن است هنوز در حال راه‌اندازی باشد.</value>
+  </data>
+  <data name="error.request" xml:space="preserve">
+    <value>درخواست ناموفق بود: {0}</value>
+  </data>
+  <data name="error.restore_failed" xml:space="preserve">
+    <value>پیکربندی بازگردانده نشد: {0}</value>
+  </data>
+  <data name="fit.cpu" xml:space="preserve">
+    <value>روی پردازنده اجرا می‌شود</value>
+  </data>
+  <data name="fit.disk" xml:space="preserve">
+    <value>از دیسک سرو می‌شود</value>
+  </data>
+  <data name="fit.gpu" xml:space="preserve">
+    <value>در کارت گرافیک جا می‌شود</value>
+  </data>
+  <data name="fit.offload" xml:space="preserve">
+    <value>از حافظه سیستم سرو می‌شود</value>
+  </data>
+  <data name="fit.unknown" xml:space="preserve">
+    <value>سنجیده نشده</value>
+  </data>
+  <data name="footer.models_loaded" xml:space="preserve">
+    <value>{0} مدل از {1} مدل بارگذاری شده است</value>
+  </data>
+  <data name="footer.never" xml:space="preserve">
+    <value>هنوز اتصالی برقرار نشده است</value>
+  </data>
+  <data name="footer.updated" xml:space="preserve">
+    <value>به‌روزرسانی {0}</value>
+  </data>
+  <data name="format.list_separator" xml:space="preserve">
+    <value>، </value>
+  </data>
+  <data name="gpumode.auto" xml:space="preserve">
+    <value>خودکار</value>
+  </data>
+  <data name="gpumode.manual" xml:space="preserve">
+    <value>دستی</value>
+  </data>
+  <data name="hint.allow_oversize" xml:space="preserve">
+    <value>این را روشن بگذارید تا مدلی که در حافظه گرافیکی این دستگاه جا نمی‌شود هم اجرا شود. کندتر اجرا می‌شود، اما اجرا می‌شود.</value>
+  </data>
+  <data name="hint.clients" xml:space="preserve">
+    <value>نشانی سرویس، کلید و فهرست مدل‌ها را در فایل پیکربندی هر دستیار می‌نویسد.</value>
+  </data>
+  <data name="hint.full_tool_access" xml:space="preserve">
+    <value>خطرناک: به عامل‌های پشتیبانی‌شده اجازه می‌دهد بدون تأیید ابزارها را اجرا کنند و sandbox آن‌ها را غیرفعال می‌کند. فقط برای عامل‌ها و پروژه‌های مورد اعتماد فعال کنید.</value>
+  </data>
+  <data name="hint.endpoint" xml:space="preserve">
+    <value>سرور خودِ Unsloth از پیش APIهای OpenAI و Anthropic را روی یک درگاه پاسخ می‌دهد، پس عامل‌ها می‌توانند مستقیم با آن حرف بزنند. دروازه این برنامه یک نقطه‌پایانی جلوی همه مدل‌های اینجا می‌گذارد و آن‌ها را در صورت نیاز جابه‌جا می‌کند.</value>
+  </data>
+  <data name="hint.firewall" xml:space="preserve">
+    <value>رایانه‌های دیگر به اجازهٔ دیوارهٔ آتش برای این درگاه هم نیاز دارند: {0}</value>
+  </data>
+  <data name="hint.hardware" xml:space="preserve">
+    <value>نیاز هر مدل، سنجیده در برابر این دستگاه. هیچ‌چیز در اینجا جلوی اجرای مدل را نمی‌گیرد: مدلی بزرگ‌تر از حافظه گرافیکی از حافظه سیستم سرو می‌شود.</value>
+  </data>
+  <data name="hint.local_only" xml:space="preserve">
+    <value>دروازه فقط از همین رایانه در دسترس است.</value>
+  </data>
+  <data name="hint.make_default" xml:space="preserve">
+    <value>افزونه‌های ویرایشگر Codex و Qwen Code هیچ تنظیم نقطه‌پایانی ندارند، پس همین است که آن‌ها را به اینجا هدایت می‌کند. با خاموش‌کردن آن، پیش‌فرض‌های خودتان دست‌نخورده می‌ماند و تنها ارائه‌دهنده افزوده می‌شود.</value>
+  </data>
+  <data name="hint.mode" xml:space="preserve">
+    <value>در حالت انحصاری فقط یک مدل در حافظهٔ گرافیکی می‌ماند و در صورت نیاز جابه‌جا می‌شود.</value>
+  </data>
+  <data name="hint.network" xml:space="preserve">
+    <value>با اشتراک‌گذاری، دروازه روی همهٔ کارت‌های شبکه شنود می‌کند تا رایانه‌های دیگر هم بتوانند از آن استفاده کنند.</value>
+  </data>
+  <data name="hint.restore" xml:space="preserve">
+    <value>Codex، Qwen Code، Claude Code، Continue و VS Code را دقیقاً به همان حالتی برمی‌گرداند که پیش از نخستین تغییر این برنامه داشتند.</value>
+  </data>
+  <data name="hint.serve.gateway" xml:space="preserve">
+    <value>یک نقطه‌پایانی، همه مدل‌های فهرست، انتخاب در هر درخواست و جابه‌جایی خودکار.</value>
+  </data>
+  <data name="hint.serve.unsloth" xml:space="preserve">
+    <value>عامل‌ها مستقیم با Unsloth — روی همین رایانه یا رایانه‌ای دیگر — گفتگو می‌کنند و این راه‌انداز از مسیر درخواست کنار می‌ماند. Unsloth هر بار یک مدل را در حافظه نگه می‌دارد؛ آن را در پایین انتخاب و بارگذاری کنید.</value>
+  </data>
+  <data name="hint.unsloth_start" xml:space="preserve">
+    <value>با این فرمان اجرایش کنید و دوباره بررسی کنید:</value>
+  </data>
+  <data name="hint.unsloth_tools" xml:space="preserve">
+    <value>‏`--disable-tools` مهم است: Unsloth به‌طور پیش‌فرض ابزارهای خودش را اجرا می‌کند و آن‌ها فراخوانی ابزار عاملِ کدنویس را می‌بلعند، پس عامل پاسخ می‌دهد اما هرگز پرونده‌ای را ویرایش نمی‌کند.</value>
+  </data>
+  <data name="label.actions" xml:space="preserve">
+    <value>عملیات</value>
+  </data>
+  <data name="label.allow_oversize" xml:space="preserve">
+    <value>اجرای مدل‌های بزرگ‌تر از این سخت‌افزار</value>
+  </data>
+  <data name="label.context_length" xml:space="preserve">
+    <value>طول زمینه</value>
+  </data>
+  <data name="label.cpu_moe" xml:space="preserve">
+    <value>لایه‌های خبره در حافظه سیستم</value>
+  </data>
+  <data name="label.endpoint" xml:space="preserve">
+    <value>نشانی سرویس</value>
+  </data>
+  <data name="label.endpoint_source" xml:space="preserve">
+    <value>سرویس از راه</value>
+  </data>
+  <data name="label.fit" xml:space="preserve">
+    <value>کوچک‌سازی تا جا شود</value>
+  </data>
+  <data name="label.fit_context" xml:space="preserve">
+    <value>کمترین زمینه هنگام کوچک‌سازی</value>
+  </data>
+  <data name="label.flash_attention" xml:space="preserve">
+    <value>توجه فلش</value>
+  </data>
+  <data name="label.gpu_layers" xml:space="preserve">
+    <value>لایه‌ها روی کارت گرافیک</value>
+  </data>
+  <data name="label.gpu_mode" xml:space="preserve">
+    <value>جای‌گذاری</value>
+  </data>
+  <data name="label.graphics_memory" xml:space="preserve">
+    <value>حافظه گرافیکی</value>
+  </data>
+  <data name="label.idle_timeout" xml:space="preserve">
+    <value>آزادسازی حافظهٔ گرافیکی پس از (ثانیه)</value>
+  </data>
+  <data name="label.key_source" xml:space="preserve">
+    <value>کلید از</value>
+  </data>
+  <data name="label.kv_cache" xml:space="preserve">
+    <value>دقت حافظه نهان</value>
+  </data>
+  <data name="label.language" xml:space="preserve">
+    <value>زبان</value>
+  </data>
+  <data name="label.local_url" xml:space="preserve">
+    <value>همین رایانه</value>
+  </data>
+  <data name="label.make_default" xml:space="preserve">
+    <value>این را پیش‌فرض هر عامل کن</value>
+  </data>
+  <data name="label.full_tool_access" xml:space="preserve">
+    <value>اجازهٔ دسترسی نامحدود به ابزارها</value>
+  </data>
+  <data name="label.mode" xml:space="preserve">
+    <value>حالت</value>
+  </data>
+  <data name="label.model" xml:space="preserve">
+    <value>مدل</value>
+  </data>
+  <data name="label.no_gpu" xml:space="preserve">
+    <value>کارت گرافیکی شناسایی نشد</value>
+  </data>
+  <data name="label.no_kv_offload" xml:space="preserve">
+    <value>نگه‌داشتن حافظه نهان در حافظه سیستم</value>
+  </data>
+  <data name="label.port" xml:space="preserve">
+    <value>درگاه</value>
+  </data>
+  <data name="label.project_folder" xml:space="preserve">
+    <value>پوشهٔ پروژه</value>
+  </data>
+  <data name="label.scope" xml:space="preserve">
+    <value>نشانی نوشته‌شده</value>
+  </data>
+  <data name="label.client_model" xml:space="preserve">
+    <value>مدل پیش‌فرض عامل‌های کدنویسی</value>
+  </data>
+  <data name="label.search" xml:space="preserve">
+    <value>جست‌وجو در فهرست Unsloth</value>
+  </data>
+  <data name="label.share_lan" xml:space="preserve">
+    <value>اشتراک‌گذاری در شبکهٔ محلی</value>
+  </data>
+  <data name="label.swa_full" xml:space="preserve">
+    <value>حافظه نهان پنجره‌ای کامل</value>
+  </data>
+  <data name="label.system_memory" xml:space="preserve">
+    <value>حافظه سیستم</value>
+  </data>
+  <data name="label.targets" xml:space="preserve">
+    <value>پیکربندی برای</value>
+  </data>
+  <data name="label.threads" xml:space="preserve">
+    <value>رشته‌ها</value>
+  </data>
+  <data name="label.unsloth_key" xml:space="preserve">
+    <value>کلید API</value>
+  </data>
+  <data name="label.unsloth_server" xml:space="preserve">
+    <value>سرور Unsloth</value>
+  </data>
+  <data name="label.unsloth_url" xml:space="preserve">
+    <value>نشانی سرور</value>
+  </data>
+  <data name="loading" xml:space="preserve">
+    <value>در حال بارگذاری…</value>
+  </data>
+  <data name="log.activating" xml:space="preserve">
+    <value>در حال فعال‌سازی {0}…</value>
+  </data>
+  <data name="log.bundle_saved" xml:space="preserve">
+    <value>بستهٔ تنظیمات کلاینت دریافت شد.</value>
+  </data>
+  <data name="log.copied_key" xml:space="preserve">
+    <value>کلید دسترسی در حافظهٔ موقت کپی شد.</value>
+  </data>
+  <data name="log.copied_url" xml:space="preserve">
+    <value>نشانی سرویس در حافظهٔ موقت کپی شد.</value>
+  </data>
+  <data name="log.language_changed" xml:space="preserve">
+    <value>زبان رابط کاربری به {0} تغییر کرد.</value>
+  </data>
+  <data name="log.launched" xml:space="preserve">
+    <value>{0} با مدل {1} در پوشهٔ {2} اجرا شد.</value>
+  </data>
+  <data name="log.loading_model" xml:space="preserve">
+    <value>در حال بارگذاری {0}. نخستین بارگذاری ممکن است چند دقیقه طول بکشد.</value>
+  </data>
+  <data name="log.mode_changed" xml:space="preserve">
+    <value>تغییر حالت به {0}…</value>
+  </data>
+  <data name="log.model_ok" xml:space="preserve">
+    <value>{0}: انجام شد.</value>
+  </data>
+  <data name="log.model_removed" xml:space="preserve">
+    <value>{0} از دروازه حذف شد.</value>
+  </data>
+  <data name="log.no_terminal" xml:space="preserve">
+    <value>هیچ پایانه‌ای یافت نشد. این اسکریپت را دستی اجرا کنید: {0}</value>
+  </data>
+  <data name="log.unloading_model" xml:space="preserve">
+    <value>در حال تخلیهٔ {0}…</value>
+  </data>
+  <data name="mode.concurrent" xml:space="preserve">
+    <value>هم‌زمان (همهٔ مدل‌ها بارگذاری بمانند)</value>
+  </data>
+  <data name="mode.exclusive" xml:space="preserve">
+    <value>انحصاری (هر بار یک مدل)</value>
+  </data>
+  <data name="notice.activated" xml:space="preserve">
+    <value>{0} اکنون مدل فعال است.</value>
+  </data>
+  <data name="notice.endpoint_saved" xml:space="preserve">
+    <value>عامل‌ها برای {0} پیکربندی خواهند شد.</value>
+  </data>
+  <data name="notice.firewall_added" xml:space="preserve">
+    <value>قاعدهٔ دیوارهٔ آتش افزوده شد.</value>
+  </data>
+  <data name="notice.install_ok" xml:space="preserve">
+    <value>تنظیمات در {0} فایل نوشته شد و به {1} اشاره می‌کند.</value>
+  </data>
+  <data name="notice.model_added" xml:space="preserve">
+    <value>{0} به دروازه افزوده شد.</value>
+  </data>
+  <data name="notice.restart_required" xml:space="preserve">
+    <value>ذخیره شد. برای شنود روی نشانی تازه، راه‌انداز را دوباره اجرا کنید.</value>
+  </data>
+  <data name="notice.restore_nothing" xml:space="preserve">
+    <value>چیزی برای بازگرداندن نبود.</value>
+  </data>
+  <data name="notice.restore_ok" xml:space="preserve">
+    <value>{0} پرونده به حالت پیشین بازگردانده شد.</value>
+  </data>
+  <data name="notice.runtime_saved" xml:space="preserve">
+    <value>تنظیمات اجرا برای {0} ذخیره شد.</value>
+  </data>
+  <data name="notice.runtime_tuned" xml:space="preserve">
+    <value>{0} برای این دستگاه تنظیم شد.</value>
+  </data>
+  <data name="notice.saved" xml:space="preserve">
+    <value>ذخیره شد.</value>
+  </data>
+  <data name="option.model_default" xml:space="preserve">
+    <value>{0} (پیش‌فرض)</value>
+  </data>
+  <data name="placeholder.project_folder" xml:space="preserve">
+    <value>D:\Projects\MyApp</value>
+  </data>
+  <data name="placeholder.search" xml:space="preserve">
+    <value>qwen3 coder</value>
+  </data>
+  <data name="placeholder.unsloth_key" xml:space="preserve">
+    <value>خودکار پیدا می‌شود — کلیدی بچسبانید یا در پایین وارد شوید تا یکی ساخته شود</value>
+  </data>
+  <data name="placeholder.unsloth_url" xml:space="preserve">
+    <value>http://127.0.0.1:8888 یا http://192.168.1.20:8888</value>
+  </data>
+  <data name="scope.lan" xml:space="preserve">
+    <value>نشانی شبکهٔ محلی</value>
+  </data>
+  <data name="scope.local" xml:space="preserve">
+    <value>فقط همین رایانه</value>
+  </data>
+  <data name="section.clients" xml:space="preserve">
+    <value>دستیارهای کدنویسی</value>
+  </data>
+  <data name="section.endpoint" xml:space="preserve">
+    <value>عامل‌ها درخواست‌ها را کجا بفرستند</value>
+  </data>
+  <data name="section.fleet" xml:space="preserve">
+    <value>مدل‌های دروازه</value>
+  </data>
+  <data name="section.hardware" xml:space="preserve">
+    <value>سخت‌افزار و برون‌ریزی</value>
+  </data>
+  <data name="section.library" xml:space="preserve">
+    <value>کتابخانهٔ مدل‌ها</value>
+  </data>
+  <data name="section.log" xml:space="preserve">
+    <value>گزارش فعالیت</value>
+  </data>
+  <data name="section.network" xml:space="preserve">
+    <value>شبکه</value>
+  </data>
+  <data name="serve.gateway" xml:space="preserve">
+    <value>دروازه این برنامه</value>
+  </data>
+  <data name="serve.unsloth" xml:space="preserve">
+    <value>سرور Unsloth، مستقیم</value>
+  </data>
+  <data name="source.folder" xml:space="preserve">
+    <value>پوشهٔ دلخواه</value>
+  </data>
+  <data name="source.huggingface" xml:space="preserve">
+    <value>حافظهٔ نهان Hugging Face</value>
+  </data>
+  <data name="source.lmstudio" xml:space="preserve">
+    <value>LM Studio</value>
+  </data>
+  <data name="state.attached" xml:space="preserve">
+    <value>متصل‌شده</value>
+  </data>
+  <data name="state.downloaded" xml:space="preserve">
+    <value>دانلودشده</value>
+  </data>
+  <data name="state.failed" xml:space="preserve">
+    <value>ناموفق</value>
+  </data>
+  <data name="state.idle" xml:space="preserve">
+    <value>آماده</value>
+  </data>
+  <data name="state.loaded" xml:space="preserve">
+    <value>بارگذاری‌شده</value>
+  </data>
+  <data name="state.remote" xml:space="preserve">
+    <value>دانلود نشده</value>
+  </data>
+  <data name="state.unsloth_no_key" xml:space="preserve">
+    <value>کلیدی پیدا نشد</value>
+  </data>
+  <data name="state.unsloth_no_models" xml:space="preserve">
+    <value>مدلی فهرست نشده</value>
+  </data>
+  <data name="state.unsloth_ready" xml:space="preserve">
+    <value>{0} مدل سرو می‌شود</value>
+  </data>
+  <data name="state.unsloth_unauthorised" xml:space="preserve">
+    <value>کلید رد شد</value>
+  </data>
+  <data name="state.unsloth_unreachable" xml:space="preserve">
+    <value>پاسخ نمی‌دهد</value>
+  </data>
+  <data name="status.running_idle" xml:space="preserve">
+    <value>در حال اجرا — هیچ مدلی بارگذاری نشده</value>
+  </data>
+  <data name="status.running_with" xml:space="preserve">
+    <value>در حال اجرا — {0}</value>
+  </data>
+  <data name="status.starting" xml:space="preserve">
+    <value>در حال راه‌اندازی…</value>
+  </data>
+  <data name="status.stopped" xml:space="preserve">
+    <value>متوقف</value>
+  </data>
+  <data name="summary.estimate_note" xml:space="preserve">
+    <value>اندازه حافظه نهان برآوردی است: سرایند این مدل شکل آن را توصیف نمی‌کند.</value>
+  </data>
+  <data name="summary.footprint" xml:space="preserve">
+    <value>{0} وزن، {1} حافظه نهان، {2} حافظه کاری</value>
+  </data>
+  <data name="summary.gpu" xml:space="preserve">
+    <value>{0} — {1}</value>
+  </data>
+  <data name="summary.hardware" xml:space="preserve">
+    <value>{0} حافظه سیستم</value>
+  </data>
+  <data name="summary.local" xml:space="preserve">
+    <value>{0} گونهٔ دانلودشده، {1} روی دیسک.</value>
+  </data>
+  <data name="summary.local_empty" xml:space="preserve">
+    <value>هیچ مدل دانلودشده‌ای در حافظهٔ نهان Hugging Face یافت نشد.</value>
+  </data>
+  <data name="summary.shortfall" xml:space="preserve">
+    <value>{0} بیش از ظرفیت بزرگ‌ترین کارت گرافیک؛ این بخش از حافظه سیستم سرو می‌شود.</value>
+  </data>
+  <data name="tab.catalog" xml:space="preserve">
+    <value>فهرست Unsloth</value>
+  </data>
+  <data name="tab.downloaded" xml:space="preserve">
+    <value>دانلودشده</value>
+  </data>
+  <data name="table.active" xml:space="preserve">
+    <value>فعال</value>
+  </data>
+  <data name="table.alias" xml:space="preserve">
+    <value>نام کوتاه</value>
+  </data>
+  <data name="table.context" xml:space="preserve">
+    <value>بستر متن</value>
+  </data>
+  <data name="table.downloads" xml:space="preserve">
+    <value>دانلودها</value>
+  </data>
+  <data name="table.estimated_size" xml:space="preserve">
+    <value>اندازه برآوردی</value>
+  </data>
+  <data name="table.fit" xml:space="preserve">
+    <value>جا می‌شود</value>
+  </data>
+  <data name="table.loaded" xml:space="preserve">
+    <value>در حافظه</value>
+  </data>
+  <data name="table.model" xml:space="preserve">
+    <value>مدل</value>
+  </data>
+  <data name="table.port" xml:space="preserve">
+    <value>درگاه</value>
+  </data>
+  <data name="table.quant" xml:space="preserve">
+    <value>کوانتش</value>
+  </data>
+  <data name="table.size" xml:space="preserve">
+    <value>حجم روی دیسک</value>
+  </data>
+  <data name="table.source" xml:space="preserve">
+    <value>منبع</value>
+  </data>
+  <data name="table.state" xml:space="preserve">
+    <value>وضعیت</value>
+  </data>
+  <data name="title.variants" xml:space="preserve">
+    <value>گونه‌های {0}</value>
+  </data>
+  <data name="toggle.auto" xml:space="preserve">
+    <value>خودکار</value>
+  </data>
+  <data name="toggle.off" xml:space="preserve">
+    <value>خاموش</value>
+  </data>
+  <data name="toggle.on" xml:space="preserve">
+    <value>روشن</value>
+  </data>
+  <data name="unit.byte" xml:space="preserve">
+    <value>{0} بایت</value>
+  </data>
+  <data name="unit.gib" xml:space="preserve">
+    <value>{0} گیبی‌بایت</value>
+  </data>
+  <data name="unit.kib" xml:space="preserve">
+    <value>{0} کیبی‌بایت</value>
+  </data>
+  <data name="unit.mib" xml:space="preserve">
+    <value>{0} مبی‌بایت</value>
+  </data>
+  <data name="unit.tib" xml:space="preserve">
+    <value>{0} تبی‌بایت</value>
+  </data>
+  <data name="value.all" xml:space="preserve">
+    <value>همه</value>
+  </data>
+  <data name="value.automatic" xml:space="preserve">
+    <value>خودکار</value>
+  </data>
+  <data name="value.no" xml:space="preserve">
+    <value>خیر</value>
+  </data>
+  <data name="value.none" xml:space="preserve">
+    <value>ندارد</value>
+  </data>
+  <data name="value.unknown" xml:space="preserve">
+    <value>نامشخص</value>
+  </data>
+  <data name="value.yes" xml:space="preserve">
+    <value>بله</value>
+  </data>
+  <data name="warn.agents_missing" xml:space="preserve">
+    <value>نصب‌نشده: {0}</value>
+  </data>
+  <data name="warn.unsloth_missing" xml:space="preserve">
+    <value>دستور unsloth در PATH یافت نشد.</value>
+  </data>
+  <data name="aria.nav" xml:space="preserve">
+    <value>بخش‌های پنل</value>
+  </data>
+  <data name="label.busy" xml:space="preserve">
+    <value>در حال انجام…</value>
+  </data>
+  <data name="gs.title" xml:space="preserve">
+    <value>شروع کار در سه گام</value>
+  </data>
+  <data name="gs.step1" xml:space="preserve">
+    <value>افزودن مدل — از «دانلودشده» یا کاتالوگ Unsloth در پایین انتخاب کنید، یا مخزن را دستی وارد کنید.</value>
+  </data>
+  <data name="gs.step2" xml:space="preserve">
+    <value>انتخاب مقصد درخواست‌های عامل‌ها — این دروازه، یا سرور خود Unsloth.</value>
+  </data>
+  <data name="gs.step3" xml:space="preserve">
+    <value>نصب پیکربندی کلاینت‌ها — Codex، Qwen Code و Claude Code با یک کلیک به مدل شما متصل می‌شوند.</value>
+  </data>
+  <data name="title.add_manual" xml:space="preserve">
+    <value>افزودن مدل با نام مخزن</value>
+  </data>
+  <data name="label.repo" xml:space="preserve">
+    <value>مخزن</value>
+  </data>
+  <data name="label.quant" xml:space="preserve">
+    <value>کوانتیزاسیون (اختیاری)</value>
+  </data>
+  <data name="label.alias" xml:space="preserve">
+    <value>نام مستعار (اختیاری)</value>
+  </data>
+  <data name="placeholder.repo" xml:space="preserve">
+    <value>unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF</value>
+  </data>
+  <data name="placeholder.alias" xml:space="preserve">
+    <value>qwen3-coder</value>
+  </data>
+  <data name="btn.add_manual" xml:space="preserve">
+    <value>افزودن مدل</value>
+  </data>
+  <data name="error.repo_required" xml:space="preserve">
+    <value>ابتدا مخزن مدل را وارد کنید؛ مثلاً unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF.</value>
+  </data>
+  <data name="confirm.restore" xml:space="preserve">
+    <value>عامل‌های انتخاب‌شده دقیقاً به حالت پیش از پیکربندی این برنامه بازگردانده شوند؟</value>
+  </data>
+  <data name="label.report" xml:space="preserve">
+    <value>آخرین نصب چه چیزهایی را تغییر داد</value>
+  </data>
+  <data name="state.unsloth_loading" xml:space="preserve">
+    <value>در حال بارگذاری {0}…</value>
+  </data>
+  <data name="state.unsloth_nothing_resident" xml:space="preserve">
+    <value>{0} مدل روی دیسک، هیچ‌کدام بارگذاری‌نشده</value>
+  </data>
+  <data name="state.loading" xml:space="preserve">
+    <value>در حال بارگذاری…</value>
+  </data>
+  <data name="state.on_disk" xml:space="preserve">
+    <value>روی دیسک</value>
+  </data>
+  <data name="progress.unloading" xml:space="preserve">
+    <value>در حال تخلیهٔ {0}…</value>
+  </data>
+  <data name="progress.loading" xml:space="preserve">
+    <value>بارگذاری {0} روی سرور — مدل بزرگ چند دقیقه طول می‌کشد.</value>
+  </data>
+  <data name="progress.loading_bytes" xml:space="preserve">
+    <value>بارگذاری {0} — {1}٪ ({2} از {3})</value>
+  </data>
+  <data name="error.sign_in_required" xml:space="preserve">
+    <value>برای ساخت کلید، نام کاربری و گذرواژهٔ Unsloth Studio را وارد کنید.</value>
+  </data>
+  <data name="error.sign_in_failed" xml:space="preserve">
+    <value>کلید ساخته نشد: {0}</value>
+  </data>
+  <data name="notice.key_created" xml:space="preserve">
+    <value>یک کلید API روی {0} ساخته و ذخیره شد. عامل‌ها از آن استفاده می‌کنند.</value>
+  </data>
+  <data name="notice.unsloth_selected" xml:space="preserve">
+    <value>عامل‌ها با {0} پیکربندی می‌شوند.</value>
+  </data>
+  <data name="log.unsloth_loading" xml:space="preserve">
+    <value>از سرور Unsloth خواسته شد {0} را بارگذاری کند.</value>
+  </data>
+  <data name="log.unsloth_unloading" xml:space="preserve">
+    <value>از سرور Unsloth خواسته شد {0} را تخلیه کند.</value>
+  </data>
+  <data name="notice.unsloth_loaded" xml:space="preserve">
+    <value>{0} روی سرور Unsloth بارگذاری شد.</value>
+  </data>
+  <data name="notice.unsloth_unloaded" xml:space="preserve">
+    <value>{0} از سرور Unsloth تخلیه شد.</value>
+  </data>
+  <data name="error.unsloth_operation" xml:space="preserve">
+    <value>سرور Unsloth نتوانست این کار را برای {0} انجام دهد: {1}</value>
+  </data>
+  <data name="error.no_unsloth_model" xml:space="preserve">
+    <value>ابتدا مدلی را که سرور Unsloth فهرست می‌کند انتخاب کنید.</value>
+  </data>
+  <data name="warn.unsloth_not_resident" xml:space="preserve">
+    <value>{0} هنوز روی سرور بارگذاری نشده — «بارگذاری» را بزنید، وگرنه عامل‌ها مدلی برای گفتگو ندارند.</value>
+  </data>
+  <data name="gs.direct.title" xml:space="preserve">
+    <value>شروع کار با سرور خود Unsloth</value>
+  </data>
+  <data name="gs.direct.step1" xml:space="preserve">
+    <value>نشانی سرور را در پایین وارد کنید — روی همین رایانه یا رایانه‌ای دیگر در شبکه — و «اعمال» را بزنید.</value>
+  </data>
+  <data name="gs.direct.step2" xml:space="preserve">
+    <value>یک کلید به آن بدهید: کلیدی بچسبانید، یا با نام کاربری و گذرواژهٔ Unsloth Studio وارد شوید تا راه‌انداز یکی بسازد.</value>
+  </data>
+  <data name="gs.direct.step3" xml:space="preserve">
+    <value>مدلی را که عامل‌ها باید استفاده کنند انتخاب کنید و «بارگذاری» را بزنید تا سرور آن را در حافظه بیاورد.</value>
+  </data>
+  <data name="gs.direct.step4" xml:space="preserve">
+    <value>پیکربندی کلاینت را نصب کنید — Codex، Qwen Code و Claude Code با یک کلیک به آن مدل اشاره می‌کنند.</value>
+  </data>
+  <data name="title.sign_in" xml:space="preserve">
+    <value>ساخت کلید با ورود به حساب</value>
+  </data>
+  <data name="hint.sign_in" xml:space="preserve">
+    <value>Unsloth Studio کلیدها را به‌صورت هش‌شده نگه می‌دارد، پس کلید موجود قابل بازخوانی نیست. یک بار با نام کاربری و گذرواژهٔ Studio وارد شوید تا کلیدی به نام «Padra Platform Launcher» برای عامل‌ها ساخته شود. گذرواژه فقط برای همان درخواست استفاده می‌شود و هرگز ذخیره نمی‌شود.</value>
+  </data>
+  <data name="label.username" xml:space="preserve">
+    <value>نام کاربری Studio</value>
+  </data>
+  <data name="label.password" xml:space="preserve">
+    <value>گذرواژهٔ Studio</value>
+  </data>
+  <data name="btn.create_key" xml:space="preserve">
+    <value>ورود و ساخت کلید</value>
+  </data>
+  <data name="hint.unsloth_pick" xml:space="preserve">
+    <value>سرور هر بار یک مدل را در حافظه نگه می‌دارد. مدلی را که عامل‌ها باید استفاده کنند انتخاب کنید؛ «بارگذاری» آن را روی سرور — هر جا که اجرا می‌شود — در حافظه می‌آورد.</value>
+  </data>
+  <data name="aria.use_model" xml:space="preserve">
+    <value>پیکربندی عامل‌ها با {0}</value>
+  </data>
+  <data name="hint.unsloth_remote_empty" xml:space="preserve">
+    <value>سرور هنوز مدلی فهرست نمی‌کند. در Unsloth Studio روی آن رایانه مدلی دانلود کنید و دوباره بررسی کنید.</value>
+  </data>
+  <data name="hint.unsloth_remote_start" xml:space="preserve">
+    <value>چیزی در آن نشانی پاسخ نمی‌دهد. Unsloth Studio را روی آن رایانه اجرا کنید، دسترسی شبکهٔ محلی را در تنظیماتش روشن کنید و دیوار آتش آن را بررسی کنید.</value>
+  </data>
+  <data name="empty.unsloth_short" xml:space="preserve">
+    <value>مدلی روی سرور نیست</value>
+  </data>
+  <data name="hint.direct_target" xml:space="preserve">
+    <value>عامل‌ها برای {0} با مدل {1} نوشته می‌شوند.</value>
+  </data>
+  <data name="hint.direct_no_target" xml:space="preserve">
+    <value>به‌محض اینکه سرور {0} مدلی فهرست کند، عامل‌ها برای آن نوشته می‌شوند.</value>
+  </data>
+</root>

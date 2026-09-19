@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Windows-only shell: WPF + WebView2. The gateway itself is cross-platform
+       and lives in Padra.Web, which this project hosts in-process. -->
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>Padra.Desktop</RootNamespace>
+    <AssemblyName>Padra Platform Launcher</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Only the domain library: the gateway runs as a child process so the
+         Blazor static assets stay owned by the web project that generates them. -->
+    <ProjectReference Include="..\Padra.Core\Padra.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="models.yaml" CopyToOutputDirectory="PreserveNewest" Condition="Exists('models.yaml')" />
+  </ItemGroup>
+</Project>

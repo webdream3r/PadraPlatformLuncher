@@ -1,0 +1,25 @@
+<Window x:Class="Padra.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        Title="Padra Platform Launcher"
+        Width="1200" Height="880" MinWidth="920" MinHeight="640"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource SurfaceBrush}">
+    <Grid>
+        <wv2:WebView2 x:Name="Browser" Visibility="Collapsed" />
+
+        <StackPanel x:Name="Fallback" Visibility="Visible"
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="32">
+            <TextBlock x:Name="FallbackTitle" Text="Starting…"
+                       Foreground="{StaticResource TextBrush}" FontSize="18"
+                       HorizontalAlignment="Center" TextAlignment="Center" />
+            <TextBlock x:Name="FallbackDetail" Margin="0,12,0,0" MaxWidth="620"
+                       Foreground="{StaticResource TextBrush}" TextWrapping="Wrap"
+                       HorizontalAlignment="Center" TextAlignment="Center" />
+            <Button x:Name="OpenInBrowser" Content="Open in your browser" Margin="0,20,0,0"
+                    Padding="14,7" HorizontalAlignment="Center" Visibility="Collapsed"
+                    Click="OnOpenInBrowser" />
+        </StackPanel>
+    </Grid>
+</Window>

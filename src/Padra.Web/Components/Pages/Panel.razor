@@ -1,0 +1,985 @@
+@page "/"
+@implements IAsyncDisposable
+@inject IStringLocalizer<UiStrings> L
+@inject ModelFleet Fleet
+@inject ModelLibrary Library
+@inject ActivityLog Log
+@inject UserSettings Settings
+@inject NavigationManager Navigation
+@inject IJSRuntime Js
+@inject EndpointResolver Resolver
+
+<header class="topbar">
+    <div class="brand">
+        <span class="brand-mark" aria-hidden="true">P</span>
+        <div>
+            <h1>@L["app.title"]</h1>
+            <p class="muted">@L["app.subtitle"]</p>
+        </div>
+    </div>
+    <nav class="nav-bar" aria-label="@L["aria.nav"]">
+        <a href="#fleet-heading">@L["section.fleet"]</a>
+        <a href="#library-heading">@L["section.library"]</a>
+        <a href="#hardware-heading">@L["section.hardware"]</a>
+        <a href="#endpoint-heading">@L["section.endpoint"]</a>
+        <a href="#clients-heading">@L["section.clients"]</a>
+        <a href="#network-heading">@L["section.network"]</a>
+        <a href="#log-heading">@L["section.log"]</a>
+    </nav>
+
+    <div class="topbar-controls">
+        <label class="field">
+            <span>@L["label.language"]</span>
+            <select aria-label="@L["aria.language"]" value="@CurrentCulture"
+                    @onchange="OnCultureChanged">
+                @foreach (var culture in PadraHost.SupportedCultures)
+                {
+                    <option value="@culture">@L[$"culture.{culture}"]</option>
+                }
+            </select>
+        </label>
+        <label class="field">
+            <span>@L["label.mode"]</span>
+            <select aria-label="@L["aria.mode"]" value="@Fleet.Gateway.Mode.ToString()"
+                    @onchange="OnModeChanged">
+                <option value="Exclusive">@L["mode.exclusive"]</option>
+                <option value="Concurrent">@L["mode.concurrent"]</option>
+            </select>
+        </label>
+    </div>
+</header>
+
+<section class="statusbar" role="status" aria-live="polite" aria-label="@L["aria.status"]">
+    <span class="pill @(LoadedCount > 0 ? "pill-ok" : "pill-idle")">
+        <span class="dot" aria-hidden="true"></span>
+        <span>@StatusText</span>
+    </span>
+
+    @if (Busy)
+    {
+        <span class="pill pill-busy">
+            <span class="spinner" aria-hidden="true"></span>
+            <span>@L["label.busy"]</span>
+        </span>
+    }
+
+    <div class="endpoint">
+        <span class="muted">@L["label.endpoint"]</span>
+        <code>@LocalUrl</code>
+        <button type="button" class="btn btn-ghost" @onclick='() => Copy(LocalUrl, "log.copied_url")'>
+            @L["btn.copy_url"]
+        </button>
+        <button type="button" class="btn btn-ghost" @onclick='() => Copy(Fleet.ApiKey, "log.copied_key")'>
+            @L["btn.copy_key"]
+        </button>
+    </div>
+
+    @if (PendingOperation is not null)
+    {
+        <div class="strip progress" role="status" aria-live="polite">
+            <span class="spinner" aria-hidden="true"></span>
+            <span>@OperationText</span>
+            @if (LoadProgress.InFlight && LoadProgress.BytesTotal > 0)
+            {
+                <progress class="grow" max="1000" value="@((int)Math.Round(LoadProgress.Fraction * 1000))"
+                          aria-label="@OperationText"></progress>
+            }
+        </div>
+    }
+
+    <span class="spacer"></span>
+    <span class="muted">@Summary</span>
+</section>
+
+<nav class="nav-bar" aria-label="@L["aria.nav"]">
+    <a href="#fleet-heading">@L["section.fleet"]</a>
+    <a href="#library-heading">@L["section.library"]</a>
+    <a href="#hardware-heading">@L["section.hardware"]</a>
+    <a href="#endpoint-heading">@L["section.endpoint"]</a>
+    <a href="#clients-heading">@L["section.clients"]</a>
+    <a href="#network-heading">@L["section.network"]</a>
+    <a href="#log-heading">@L["section.log"]</a>
+</nav>
+
+@if (Error is { Length: > 0 })
+{
+    <p class="banner" role="alert">@Error</p>
+}
+@if (Notice is { Length: > 0 })
+{
+    <p class="banner banner-ok" role="status">@Notice</p>
+}
+
+<main id="main">
+    @if (DirectMode && EffectiveUnslothModel is null)
+    {
+        <section class="panel getting-started" aria-labelledby="gs-heading">
+            <h2 id="gs-heading">@L["gs.direct.title"]</h2>
+            <ol class="steps">
+                <li>@L["gs.direct.step1"]</li>
+                <li>@L["gs.direct.step2"]</li>
+                <li>@L["gs.direct.step3"]</li>
+                <li>@L["gs.direct.step4"]</li>
+            </ol>
+        </section>
+    }
+    else if (!DirectMode && Fleet.Options.Models.Count == 0)
+    {
+        <section class="panel getting-started" aria-labelledby="gs-heading">
+            <h2 id="gs-heading">@L["gs.title"]</h2>
+            <ol class="steps">
+                <li>@L["gs.step1"]</li>
+                <li>@L["gs.step2"]</li>
+                <li>@L["gs.step3"]</li>
+            </ol>
+        </section>
+    }
+    <!-- ------------------------------------------------------------- fleet -->
+    <section class="panel" aria-labelledby="fleet-heading">
+        <div class="panel-head">
+            <h2 id="fleet-heading">@L["section.fleet"]</h2>
+            <p class="muted hint">@L["hint.mode"]</p>
+            <button type="button" class="btn btn-ghost" @onclick="RefreshAsync">@L["btn.refresh"]</button>
+        </div>
+
+        <div class="table-wrap">
+            <table class="grid">
+                <caption class="sr-only">@L["section.fleet"]</caption>
+                <thead>
+                    <tr>
+                        <th scope="col" class="w-4">@L["table.active"]</th>
+                        <th scope="col" class="w-5">@L["table.alias"]</th>
+                        <th scope="col" class="w-3">@L["table.model"]</th>
+                        <th scope="col" class="num">@L["table.context"]</th>
+                        <th scope="col" class="num">@L["table.port"]</th>
+                        <th scope="col">@L["table.state"]</th>
+                        <th scope="col">@L["label.actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Fleet.Options.Models.Count == 0)
+                    {
+                        <tr class="placeholder-row"><td colspan="7">@L["empty.fleet"]</td></tr>
+                    }
+                    @foreach (var model in Fleet.Options.Models)
+                    {
+                        var backend = Fleet.Find(model.Alias);
+                        var running = backend?.IsRunning == true;
+                        <tr class="@(model.Alias == Fleet.DefaultAlias ? "row-default" : "")" @key="model.Alias">
+                            <td>
+                                <input type="radio" name="active-model" value="@model.Alias"
+                                       checked="@(model.Alias == Fleet.DefaultAlias)"
+                                       disabled="@Busy"
+                                       aria-label="@L["aria.activate", model.Alias]"
+                                       @onchange="() => ActivateAsync(model.Alias)" />
+                            </td>
+                            <td>@model.Alias</td>
+                            <td class="model">@model.ModelSpec</td>
+                            <td class="num">
+                                @(model.ContextLength is { } context
+                                    ? CultureFormat.Number(context)
+                                    : L["value.unknown"].Value)
+                            </td>
+                            <td class="num">@CultureFormat.Number(model.Port)</td>
+                            <td>
+                                <span class="@BadgeClass(backend)" title="@backend?.LastError">
+                                    @L[BadgeKey(backend)]
+                                </span>
+                            </td>
+                            <td>
+                                <div class="row-actions">
+                                    <button type="button" class="btn" disabled="@(Busy || running)"
+                                            @onclick="() => LoadAsync(model.Alias)">@L["btn.load"]</button>
+                                    <button type="button" class="btn" disabled="@(Busy || !running)"
+                                            @onclick="() => UnloadAsync(model.Alias)">@L["btn.unload"]</button>
+                                    <button type="button" class="btn btn-danger" disabled="@Busy"
+                                            @onclick="() => RemoveAsync(model.Alias)">@L["btn.remove"]</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- --------------------------------------------------------- discovery -->
+    <section class="panel" aria-labelledby="library-heading">
+        <div class="panel-head">
+            <h2 id="library-heading">@L["section.library"]</h2>
+            <div class="tabs" role="tablist" aria-label="@L["aria.library_tabs"]">
+                <button type="button" class="tab @(Tab == LibraryTab.Local ? "is-active" : "")"
+                        role="tab" aria-selected="@(Tab == LibraryTab.Local)"
+                        @onclick="() => SelectTab(LibraryTab.Local)">@L["tab.downloaded"]</button>
+                <button type="button" class="tab @(Tab == LibraryTab.Catalog ? "is-active" : "")"
+                        role="tab" aria-selected="@(Tab == LibraryTab.Catalog)"
+                        @onclick="() => SelectTab(LibraryTab.Catalog)">@L["tab.catalog"]</button>
+            </div>
+            <button type="button" class="btn btn-ghost" disabled="@Busy"
+                    @onclick="() => LoadLibraryAsync(true)">@L["btn.rescan"]</button>
+        </div>
+
+        <details class="strip add-manual">
+            <summary>@L["title.add_manual"]</summary>
+            <div class="strip">
+                <label class="field grow">
+                    <span>@L["label.repo"]</span>
+                    <input type="text" spellcheck="false" dir="ltr" @bind="RepoInput"
+                           placeholder="@L["placeholder.repo"]" />
+                </label>
+                <label class="field">
+                    <span>@L["label.quant"]</span>
+                    <input type="text" spellcheck="false" dir="ltr" @bind="QuantInput"
+                           placeholder="UD-Q4_K_XL" />
+                </label>
+                <label class="field">
+                    <span>@L["label.alias"]</span>
+                    <input type="text" spellcheck="false" dir="ltr" @bind="AliasInput"
+                           placeholder="@L["placeholder.alias"]" />
+                </label>
+                <button type="button" class="btn btn-primary" disabled="@Busy"
+                        @onclick="AddManualAsync">@L["btn.add_manual"]</button>
+            </div>
+        </details>
+
+        @if (Tab == LibraryTab.Local)
+        {
+            <p class="strip muted">
+                @(LocalModels.Count > 0
+                    ? L["summary.local", CultureFormat.Number(LocalModels.Count),
+                        CultureFormat.Bytes(LocalBytes, L)].Value
+                    : L["summary.local_empty"].Value)
+            </p>
+            <div class="table-wrap scroller">
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th scope="col">@L["table.model"]</th>
+                            <th scope="col">@L["table.quant"]</th>
+                            <th scope="col" class="num">@L["table.size"]</th>
+                            <th scope="col" class="num">@L["table.context"]</th>
+                            <th scope="col">@L["table.source"]</th>
+                            <th scope="col">@L["label.actions"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (LocalModels.Count == 0)
+                        {
+                            <tr class="placeholder-row"><td colspan="6">@L["empty.local"]</td></tr>
+                        }
+                        @foreach (var entry in LocalModels)
+                        {
+                            <tr @key="entry.Model.Spec">
+                                <td class="model">@entry.Model.Repo</td>
+                                <td>@(entry.Model.Quant.Length > 0 ? entry.Model.Quant : L["value.none"].Value)</td>
+                                <td class="num">@CultureFormat.Bytes(entry.Model.SizeBytes, L)</td>
+                                <td class="num">
+                                    @(entry.Model.ContextLength is { } context
+                                        ? CultureFormat.Number(context)
+                                        : L["value.unknown"].Value)
+                                </td>
+                                <td>@L[$"source.{entry.Model.Source.ToString().ToLowerInvariant()}"]</td>
+                                <td>
+                                    <button type="button" disabled="@(Busy || entry.InFleet)"
+                                            class="@(entry.InFleet ? "btn" : "btn btn-primary")"
+                                            @onclick="() => AddAsync(entry.Model.Repo, entry.Model.Quant, entry.Model.ContextLength)">
+                                        @L[entry.InFleet ? "btn.in_fleet" : "btn.add_to_fleet"]
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="strip">
+                <label class="field grow">
+                    <span>@L["label.search"]</span>
+                    <input type="search" spellcheck="false" @bind="Search" @bind:event="oninput"
+                           @onkeydown="OnSearchKey" placeholder="@L["placeholder.search"]" />
+                </label>
+                <button type="button" class="btn" disabled="@Busy"
+                        @onclick="() => SearchCatalogAsync()">@L["btn.search"]</button>
+            </div>
+            <div class="table-wrap scroller">
+                <table class="grid">
+                    <thead>
+                        <tr>
+                            <th scope="col">@L["table.model"]</th>
+                            <th scope="col" class="num">@L["table.downloads"]</th>
+                            <th scope="col">@L["table.state"]</th>
+                            <th scope="col">@L["label.actions"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (CatalogRepos.Count == 0)
+                        {
+                            <tr class="placeholder-row"><td colspan="4">@L["empty.catalog"]</td></tr>
+                        }
+                        @foreach (var repo in CatalogRepos)
+                        {
+                            <tr @key="repo.Repo">
+                                <td class="model">@repo.Repo</td>
+                                <td class="num">@CultureFormat.Number(repo.Downloads)</td>
+                                <td>
+                                    <span class="@(DownloadedRepos.Contains(repo.Repo.ToLowerInvariant()) ? "badge badge-loaded" : "badge")">
+                                        @L[DownloadedRepos.Contains(repo.Repo.ToLowerInvariant())
+                                            ? "state.downloaded" : "state.remote"]
+                                    </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn" disabled="@Busy"
+                                            @onclick="() => ShowVariantsAsync(repo.Repo)">@L["btn.variants"]</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (SelectedRepo is { } record)
+            {
+                <h3 class="strip">@L["title.variants", record.Repo]</h3>
+                <div class="table-wrap scroller">
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th scope="col">@L["table.quant"]</th>
+                                <th scope="col" class="num">@L["table.size"]</th>
+                                <th scope="col" class="num">@L["table.context"]</th>
+                                <th scope="col">@L["table.state"]</th>
+                                <th scope="col">@L["label.actions"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var variant in record.Variants)
+                            {
+                                var inFleet = Fleet.Options.Models.Any(m =>
+                                    string.Equals(m.Repo, record.Repo, StringComparison.OrdinalIgnoreCase) &&
+                                    string.Equals(m.Quant, variant.Quant, StringComparison.OrdinalIgnoreCase));
+                                <tr @key="variant.Spec">
+                                    <td>@(variant.Quant.Length > 0 ? variant.Quant : L["value.none"].Value)</td>
+                                    <td class="num">@CultureFormat.Bytes(variant.SizeBytes, L)</td>
+                                    <td class="num">
+                                        @(variant.ContextLength is { } context
+                                            ? CultureFormat.Number(context)
+                                            : L["value.unknown"].Value)
+                                    </td>
+                                    <td>
+                                        <span class="@(variant.Downloaded ? "badge badge-loaded" : "badge")">
+                                            @L[variant.Downloaded ? "state.downloaded" : "state.remote"]
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button type="button" disabled="@(Busy || inFleet)"
+                                                class="@(inFleet ? "btn" : "btn btn-primary")"
+                                                @onclick="() => AddAsync(record.Repo, variant.Quant, variant.ContextLength)">
+                                            @L[inFleet ? "btn.in_fleet" : "btn.add_to_fleet"]
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    </section>
+
+    <!-- ---------------------------------------------------------- hardware -->
+    <section class="panel" aria-labelledby="hardware-heading">
+        <div class="panel-head">
+            <h2 id="hardware-heading">@L["section.hardware"]</h2>
+            <p class="muted hint">@L["hint.hardware"]</p>
+            <button type="button" class="btn btn-ghost" disabled="@Busy"
+                    @onclick="RefreshHardwareAsync">@L["btn.refresh"]</button>
+        </div>
+
+        <ul class="urls">
+            <li>
+                <span class="muted">@L["label.system_memory"]</span>
+                <code>@L["summary.hardware", CultureFormat.Bytes(Hardware.TotalRamBytes, L)]</code>
+            </li>
+            @if (Hardware.HasGpu)
+            {
+                @foreach (var gpu in Hardware.Gpus)
+                {
+                    <li @key="gpu.Index">
+                        <span class="muted">@L["label.graphics_memory"]</span>
+                        <code>@L["summary.gpu", gpu.Name, CultureFormat.Bytes(gpu.TotalBytes, L)]</code>
+                    </li>
+                }
+            }
+            else
+            {
+                <li>
+                    <span class="muted">@L["label.graphics_memory"]</span>
+                    <code>@L["label.no_gpu"]</code>
+                </li>
+            }
+        </ul>
+
+        <div class="table-wrap">
+            <table class="grid">
+                <caption class="sr-only">@L["section.hardware"]</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">@L["table.alias"]</th>
+                        <th scope="col" class="num">@L["table.estimated_size"]</th>
+                        <th scope="col" class="num">@L["table.context"]</th>
+                        <th scope="col">@L["table.fit"]</th>
+                        <th scope="col">@L["label.actions"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Fleet.Options.Models.Count == 0)
+                    {
+                        <tr class="placeholder-row"><td colspan="5">@L["empty.hardware"]</td></tr>
+                    }
+                    @foreach (var model in Fleet.Options.Models)
+                    {
+                        var footprint = FootprintFor(model.Alias);
+                        <tr @key="model.Alias">
+                            <td>@model.Alias</td>
+                            <td class="num">
+                                @(footprint.Verdict == FitVerdict.Unknown
+                                    ? L["value.unknown"].Value
+                                    : CultureFormat.Bytes(footprint.TotalBytes, L))
+                            </td>
+                            <td class="num">
+                                @(model.ContextLength is { } context
+                                    ? CultureFormat.Number(context)
+                                    : L["value.automatic"].Value)
+                            </td>
+                            <td>
+                                <span class="@FitClass(footprint.Verdict)">
+                                    @L[$"fit.{footprint.Verdict.ToString().ToLowerInvariant()}"]
+                                </span>
+                            </td>
+                            <td>
+                                <div class="row-actions">
+                                    <button type="button" class="btn"
+                                            disabled="@(Busy || footprint.Verdict == FitVerdict.Unknown)"
+                                            @onclick="() => TuneAsync(model.Alias)">@L["btn.tune"]</button>
+                                    <button type="button" class="btn" disabled="@Busy"
+                                            aria-expanded="@(RuntimeAlias == model.Alias)"
+                                            @onclick="() => ToggleRuntime(model.Alias)">@L["btn.runtime"]</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        @if (RuntimeAlias == model.Alias)
+                        {
+                            var current = FootprintFor(model.Alias);
+                            <tr class="detail-row" @key="@($"{model.Alias}-runtime")">
+                                <td colspan="5">
+                                    <div class="detail" role="group" aria-label="@L["aria.runtime", model.Alias]">
+                                        <p class="muted">
+                                            @(current.Verdict == FitVerdict.Unknown
+                                                ? L["fit.unknown"].Value
+                                                : L["summary.footprint",
+                                                    CultureFormat.Bytes(current.WeightBytes, L),
+                                                    CultureFormat.Bytes(current.KvCacheBytes, L),
+                                                    CultureFormat.Bytes(current.OverheadBytes, L)].Value)
+                                        </p>
+                                        @if (current.KvCacheEstimated && current.Verdict != FitVerdict.Unknown)
+                                        {
+                                            <p class="muted">@L["summary.estimate_note"]</p>
+                                        }
+                                        @if (current.ShortfallBytes > 0 && current.Verdict != FitVerdict.Unknown)
+                                        {
+                                            <p class="muted">
+                                                @L["summary.shortfall", CultureFormat.Bytes(current.ShortfallBytes, L)]
+                                            </p>
+                                        }
+
+                                        <div class="detail-grid">
+                                            <label class="field">
+                                                <span>@L["label.context_length"]</span>
+                                                <input type="number" min="0" step="1024" @bind="ContextInput"
+                                                       aria-label="@L["label.context_length"]" />
+                                            </label>
+                                            <label class="field">
+                                                <span>@L["label.gpu_mode"]</span>
+                                                <select value="@Draft.GpuMemoryMode.ToString()"
+                                                        @onchange="e => Draft.GpuMemoryMode = ParseEnum(e.Value, GpuMemoryMode.Auto)">
+                                                    @foreach (var mode in Enum.GetValues<GpuMemoryMode>())
+                                                    {
+                                                        <option value="@mode.ToString()">
+                                                            @L[$"gpumode.{mode.ToString().ToLowerInvariant()}"]
+                                                        </option>
+                                                    }
+                                                </select>
+                                            </label>
+                                            <label class="field">
+                                                <span>@L["label.gpu_layers"]</span>
+                                                <input type="number" min="-1" @bind="GpuLayersInput"
+                                                       aria-label="@L["label.gpu_layers"]" />
+                                            </label>
+                                            <label class="field">
+                                                <span>@L["label.fit"]</span>
+                                                <select value="@Draft.Fit.ToString()"
+                                                        @onchange="e => Draft.Fit = ParseEnum(e.Value, Toggle.Auto)">
+                                                    @foreach (var toggle in Enum.GetValues<Toggle>())
+                                                    {
+                                                        <option value="@toggle.ToString()">
+                                                            @L[$"toggle.{toggle.ToString().ToLowerInvariant()}"]
+                                                        </option>
+                                                    }
+                                                </select>
+                                            </label>
+                                            <label class="field">
+                                                <span>@L["label.fit_context"]</span>
+                                                <input type="number" min="0" step="512" @bind="FitContextInput"
+                                                       aria-label="@L["label.fit_context"]" />
+                                            </label>
+                                            <label class="field">
+                                                <span>@L["label.cpu_moe"]</span>
+                                                <input type="number" min="-1" @bind="CpuMoeInput"
+                                                       aria-label="@L["label.cpu_moe"]" />
+                                            </label>
+                                            <label class="field">
+                                                <span>@L["label.kv_cache"]</span>
+                                                <select value="@Draft.KvCacheType"
+                                                        @onchange="e => Draft.KvCacheType = e.Value?.ToString() ?? string.Empty">
+                                                    <option value="">@L["value.automatic"]</option>
+                                                    @foreach (var type in RuntimeOptions.KvCacheTypes)
+                                                    {
+                                                        <option value="@type">@type</option>
+                                                    }
+                                                </select>
+                                            </label>
+                                            <label class="field">
+                                                <span>@L["label.flash_attention"]</span>
+                                                <select value="@Draft.FlashAttention.ToString()"
+                                                        @onchange="e => Draft.FlashAttention = ParseEnum(e.Value, Toggle.Auto)">
+                                                    @foreach (var toggle in Enum.GetValues<Toggle>())
+                                                    {
+                                                        <option value="@toggle.ToString()">
+                                                            @L[$"toggle.{toggle.ToString().ToLowerInvariant()}"]
+                                                        </option>
+                                                    }
+                                                </select>
+                                            </label>
+                                            <label class="field">
+                                                <span>@L["label.threads"]</span>
+                                                <input type="number" min="0" @bind="ThreadsInput"
+                                                       aria-label="@L["label.threads"]" />
+                                            </label>
+                                        </div>
+
+                                        <div class="strip">
+                                            <label class="check">
+                                                <input type="checkbox" checked="@Draft.AllowOversize"
+                                                       @onchange="e => Draft.AllowOversize = e.Value is true" />
+                                                <span>@L["label.allow_oversize"]</span>
+                                            </label>
+                                            <label class="check">
+                                                <input type="checkbox" checked="@Draft.NoKvOffload"
+                                                       @onchange="e => Draft.NoKvOffload = e.Value is true" />
+                                                <span>@L["label.no_kv_offload"]</span>
+                                            </label>
+                                            <label class="check">
+                                                <input type="checkbox" checked="@Draft.SwaFull"
+                                                       @onchange="e => Draft.SwaFull = e.Value is true" />
+                                                <span>@L["label.swa_full"]</span>
+                                            </label>
+                                        </div>
+
+                                        <p class="muted">@L["hint.allow_oversize"]</p>
+
+                                        <div class="strip">
+                                            <button type="button" class="btn btn-primary" disabled="@Busy"
+                                                    @onclick="() => SaveRuntimeAsync(model.Alias)">@L["btn.save"]</button>
+                                            <button type="button" class="btn" disabled="@Busy"
+                                                    @onclick="CloseRuntime">@L["btn.cancel"]</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ---------------------------------------------------------- endpoint -->
+    <section class="panel" aria-labelledby="endpoint-heading">
+        <div class="panel-head">
+            <h2 id="endpoint-heading">@L["section.endpoint"]</h2>
+            <p class="muted hint">@L["hint.endpoint"]</p>
+            <button type="button" class="btn btn-ghost" disabled="@Busy"
+                    @onclick="CheckUnslothAsync">@L["btn.check"]</button>
+        </div>
+
+        <div class="strip">
+            <label class="field">
+                <span>@L["label.endpoint_source"]</span>
+                <select aria-label="@L["label.endpoint_source"]" value="@SourceInput.ToString()"
+                        @onchange="OnSourceChanged">
+                    @foreach (var option in Enum.GetValues<EndpointSource>())
+                    {
+                        <option value="@option.ToString()">
+                            @L[$"serve.{option.ToString().ToLowerInvariant()}"]
+                        </option>
+                    }
+                </select>
+            </label>
+            <span class="muted">
+                @L[$"hint.serve.{SourceInput.ToString().ToLowerInvariant()}"]
+            </span>
+        </div>
+
+        @if (SourceInput == EndpointSource.Unsloth)
+        {
+            <div class="strip">
+                <label class="field grow">
+                    <span>@L["label.unsloth_url"]</span>
+                    <input type="text" spellcheck="false" @bind="UnslothUrlInput"
+                           placeholder="@L["placeholder.unsloth_url"]" />
+                </label>
+                <label class="field grow">
+                    <span>@L["label.unsloth_key"]</span>
+                    <input type="password" spellcheck="false" @bind="UnslothKeyInput"
+                           placeholder="@L["placeholder.unsloth_key"]" />
+                </label>
+                <button type="button" class="btn btn-primary" disabled="@Busy"
+                        @onclick="ApplyEndpointAsync">@L["btn.apply"]</button>
+            </div>
+
+            <div class="strip">
+                <span class="muted">@L["label.unsloth_server"]</span>
+                <code>@Unsloth.BaseUrl</code>
+                @if (UnslothServerLabel is { Length: > 0 })
+                {
+                    <span class="muted">@UnslothServerLabel</span>
+                }
+                <span class="@UnslothBadgeClass">@UnslothStateText</span>
+                @if (Unsloth.KeySource is { Length: > 0 })
+                {
+                    <span class="muted">@L["label.key_source"]</span>
+                    <code>@Unsloth.KeySource</code>
+                }
+            </div>
+
+            @if (Unsloth.Detail is { Length: > 0 })
+            {
+                <p class="strip muted">@Unsloth.Detail</p>
+            }
+
+            @if (Unsloth.Reachable && !Unsloth.Authorised)
+            {
+                <details class="strip sign-in" open>
+                    <summary>@L["title.sign_in"]</summary>
+                    <p class="muted">@L["hint.sign_in"]</p>
+                    <div class="strip">
+                        <label class="field">
+                            <span>@L["label.username"]</span>
+                            <input type="text" spellcheck="false" dir="ltr" autocomplete="username"
+                                   @bind="UnslothUserInput" />
+                        </label>
+                        <label class="field">
+                            <span>@L["label.password"]</span>
+                            <input type="password" autocomplete="current-password"
+                                   @bind="UnslothPasswordInput" />
+                        </label>
+                        <button type="button" class="btn btn-primary" disabled="@Busy"
+                                @onclick="CreateUnslothKeyAsync">@L["btn.create_key"]</button>
+                    </div>
+                </details>
+            }
+
+            @if (PendingOperation is not null)
+            {
+                <div class="strip progress" role="status" aria-live="polite">
+                    <span class="spinner" aria-hidden="true"></span>
+                    <span>@OperationText</span>
+                    @if (LoadProgress.InFlight && LoadProgress.BytesTotal > 0)
+                    {
+                        <progress class="grow" max="1000" value="@((int)Math.Round(LoadProgress.Fraction * 1000))"
+                                  aria-label="@OperationText"></progress>
+                    }
+                </div>
+            }
+
+            @if (Unsloth.Models.Count > 0)
+            {
+                <p class="strip muted">@L["hint.unsloth_pick"]</p>
+                <div class="table-wrap scroller">
+                    <table class="grid">
+                        <caption class="sr-only">@L["label.unsloth_server"]</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">@L["table.active"]</th>
+                                <th scope="col">@L["table.model"]</th>
+                                <th scope="col">@L["table.quant"]</th>
+                                <th scope="col" class="num">@L["table.context"]</th>
+                                <th scope="col">@L["table.state"]</th>
+                                <th scope="col">@L["label.actions"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var model in Unsloth.Models)
+                            {
+                                var loading = Unsloth.IsLoading(model.Spec) ||
+                                              (PendingOperation is { Kind: "load" } pending &&
+                                               string.Equals(pending.Spec, model.Spec, StringComparison.OrdinalIgnoreCase));
+                                var chosen = EffectiveUnslothModel?.Spec == model.Spec;
+                                <tr @key="model.Spec">
+                                    <td>
+                                        <input type="radio" name="unsloth-model" value="@model.Spec"
+                                               checked="@chosen" disabled="@Busy"
+                                               aria-label="@L["aria.use_model", model.Spec]"
+                                               @onchange="() => SelectUnslothModelAsync(model.Spec)" />
+                                    </td>
+                                    <td class="model">@model.Id</td>
+                                    <td>@(model.Quant.Length > 0 ? model.Quant : L["value.none"].Value)</td>
+                                    <td class="num">
+                                        @(model.ContextLength is { } context
+                                            ? CultureFormat.Number(context)
+                                            : L["value.unknown"].Value)
+                                    </td>
+                                    <td>
+                                        <span class="@UnslothModelBadge(model, loading)">
+                                            @UnslothModelState(model, loading)
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="row-actions">
+                                            <button type="button" class="btn"
+                                                    disabled="@(Busy || model.Loaded || loading || PendingOperation is not null)"
+                                                    @onclick="() => LoadUnslothModelAsync(model.Spec)">@L["btn.load"]</button>
+                                            <button type="button" class="btn"
+                                                    disabled="@(Busy || !model.Loaded || PendingOperation is not null)"
+                                                    @onclick="() => UnloadUnslothModelAsync(model.Spec)">@L["btn.unload"]</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                @if (EffectiveUnslothModel is { Loaded: false } waiting && !Unsloth.IsLoading(waiting.Spec))
+                {
+                    <p class="strip warn">@L["warn.unsloth_not_resident", waiting.Spec]</p>
+                }
+            }
+            else if (Unsloth.Usable || (Unsloth.Reachable && Unsloth.Authorised))
+            {
+                <p class="strip muted">@L["hint.unsloth_remote_empty"]</p>
+            }
+            else if (Resolver.UnslothIsLocal)
+            {
+                <p class="strip muted">@L["hint.unsloth_start"]</p>
+                <div class="strip">
+                    <code>@UnslothStartCommand</code>
+                    <button type="button" class="btn btn-ghost"
+                            @onclick='() => Copy(UnslothStartCommand, "log.copied_url")'>
+                        @L["btn.copy_command"]
+                    </button>
+                </div>
+                <p class="strip muted">@L["hint.unsloth_tools"]</p>
+            }
+            else if (!Unsloth.Reachable)
+            {
+                <p class="strip muted">@L["hint.unsloth_remote_start"]</p>
+            }
+        }
+    </section>
+
+    <!-- ----------------------------------------------------------- clients -->
+    <section class="panel" aria-labelledby="clients-heading">
+        <div class="panel-head">
+            <h2 id="clients-heading">@L["section.clients"]</h2>
+            <p class="muted hint">@L["hint.clients"]</p>
+        </div>
+
+        <fieldset class="strip targets">
+            <legend>@L["label.targets"]</legend>
+            @foreach (var target in ClientConfigWriter.AllTargets)
+            {
+                var slug = ClientConfigWriter.Slug(target);
+                <label class="check">
+                    <input type="checkbox" checked="@SelectedTargets.Contains(slug)"
+                           @onchange="e => ToggleTarget(slug, e.Value is true)" />
+                    <span>@L[$"client.{slug}"]</span>
+                </label>
+            }
+        </fieldset>
+
+        <div class="strip">
+            <label class="field">
+                <span>@L["label.scope"]</span>
+                <select value="@Scope" @onchange='e => Scope = e.Value?.ToString() ?? "local"'>
+                    <option value="local">@L["scope.local"]</option>
+                    <option value="lan">@L["scope.lan"]</option>
+                </select>
+            </label>
+            <label class="field">
+                <span>@L["label.client_model"]</span>
+                <select value="@ClientModelAlias"
+                        @onchange='e => SetClientModel(e.Value?.ToString() ?? string.Empty)'>
+                    @if (LaunchChoices.Count == 0)
+                    {
+                        <option value="">@L["empty.fleet_short"]</option>
+                    }
+                    @foreach (var (value, label) in LaunchChoices)
+                    {
+                        <option value="@value">@label</option>
+                    }
+                </select>
+            </label>
+            <label class="check">
+                <input type="checkbox" checked="@MakeDefault"
+                       @onchange="e => SetMakeDefault(e.Value is true)" />
+                <span>@L["label.make_default"]</span>
+            </label>
+            <label class="check">
+                <input type="checkbox" checked="@FullToolAccess"
+                       @onchange="e => SetFullToolAccess(e.Value is true)" />
+                <span>@L["label.full_tool_access"]</span>
+            </label>
+            <button type="button" class="btn btn-primary" disabled="@Busy"
+                    @onclick="InstallAsync">@L["btn.install_configs"]</button>
+            <a class="btn" href="@($"api/client-bundle?scope={Scope}")" download="padra-client.zip">
+                @L["btn.download_bundle"]
+            </a>
+            <button type="button" class="btn btn-danger" disabled="@(Busy || !CanRestore)"
+                    @onclick="RestoreAsync">@L["btn.restore_configs"]</button>
+            <span class="spacer"></span>
+            @if (Warnings is { Length: > 0 })
+            {
+                <span class="warn">@Warnings</span>
+            }
+        </div>
+
+        <p class="strip muted">@L["hint.make_default"]</p>
+        <p class="strip warn">@L["hint.full_tool_access"]</p>
+        <p class="strip muted">@L["hint.restore"]</p>
+        @if (DirectMode)
+        {
+            <p class="strip muted">
+                @(EffectiveUnslothModel is { } target
+                    ? L["hint.direct_target", Unsloth.BaseUrl, target.Spec].Value
+                    : L["hint.direct_no_target", Unsloth.BaseUrl].Value)
+            </p>
+        }
+
+        @if (InstallOutput.Count > 0)
+        {
+            <details class="strip report" open>
+                <summary>@L["label.report"]</summary>
+                <ol class="log report-lines">
+                    @foreach (var line in InstallOutput)
+                    {
+                        <li>@line</li>
+                    }
+                </ol>
+            </details>
+        }
+
+        <div class="launch">
+            <label class="field grow">
+                <span>@L["label.project_folder"]</span>
+                <input type="text" spellcheck="false" @bind="ProjectFolder"
+                       placeholder="@L["placeholder.project_folder"]" />
+            </label>
+            <label class="field">
+                <span>@L["label.model"]</span>
+                <select aria-label="@L["aria.launch_model"]" value="@LaunchAlias" dir="ltr"
+                        @onchange="e => LaunchAlias = e.Value?.ToString() ?? string.Empty">
+                    @if (LaunchChoices.Count == 0)
+                    {
+                        <option value="">@L[DirectMode ? "empty.unsloth_short" : "empty.fleet_short"]</option>
+                    }
+                    @foreach (var (value, label) in LaunchChoices)
+                    {
+                        <option value="@value">@label</option>
+                    }
+                </select>
+            </label>
+            @foreach (var agent in Enum.GetValues<CodingAgent>())
+            {
+                <button type="button" class="btn btn-primary" disabled="@Busy"
+                        @onclick="() => LaunchAsync(agent)">
+                    @L[$"btn.open_{AgentLauncher.Slug(agent)}"]
+                </button>
+            }
+        </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- network -->
+    <section class="panel" aria-labelledby="network-heading">
+        <div class="panel-head">
+            <h2 id="network-heading">@L["section.network"]</h2>
+            <p class="muted hint">@L["hint.network"]</p>
+        </div>
+
+        <div class="strip">
+            <label class="check switch">
+                <input type="checkbox" checked="@ShareOnLan"
+                       @onchange="e => ShareOnLan = e.Value is true" />
+                <span>@L["label.share_lan"]</span>
+            </label>
+            <label class="field">
+                <span>@L["label.port"]</span>
+                <input type="number" min="1" max="65535" @bind="PortInput"
+                       aria-label="@L["label.port"]" />
+            </label>
+            <label class="field">
+                <span>@L["label.idle_timeout"]</span>
+                <input type="number" min="0" step="60" @bind="IdleInput"
+                       aria-label="@L["label.idle_timeout"]" />
+            </label>
+            <button type="button" class="btn btn-primary" disabled="@Busy"
+                    @onclick="ApplyNetworkAsync">@L["btn.apply"]</button>
+            <button type="button" class="btn" disabled="@Busy"
+                    @onclick="OpenFirewallAsync">@L["btn.firewall"]</button>
+        </div>
+
+        <ul class="urls">
+            <li>
+                <span class="muted">@L["label.local_url"]</span>
+                <code>@LocalUrl</code>
+                <button type="button" class="btn btn-ghost"
+                        @onclick='() => Copy(LocalUrl, "log.copied_url")'>@L["btn.copy"]</button>
+            </li>
+            @foreach (var entry in Endpoints.Lan)
+            {
+                <li @key="entry.Url">
+                    <span class="muted">@entry.Address</span>
+                    <code>@entry.Url</code>
+                    <button type="button" class="btn btn-ghost"
+                            @onclick='() => Copy(entry.Url, "log.copied_url")'>@L["btn.copy"]</button>
+                </li>
+            }
+        </ul>
+
+        <p class="strip muted">
+            @(Endpoints.Shared
+                ? L["hint.firewall", FirewallHelper.Command(Fleet.Gateway.Port)].Value
+                : L["hint.local_only"].Value)
+        </p>
+    </section>
+
+    <!-- --------------------------------------------------------------- log -->
+    <section class="panel panel-log" aria-labelledby="log-heading">
+        <div class="panel-head">
+            <h2 id="log-heading">@L["section.log"]</h2>
+            <button type="button" class="btn btn-ghost" @onclick="ClearLog">@L["btn.clear_log"]</button>
+        </div>
+        <ol class="log" aria-live="polite" tabindex="0" aria-label="@L["section.log"]">
+            @if (Entries.Count == 0)
+            {
+                <li class="muted localized">@L["empty.log"]</li>
+            }
+            @foreach (var entry in Entries)
+            {
+                <li @key="entry.Seq" title="@CultureFormat.DateTime(entry.At)">@entry.Text</li>
+            }
+        </ol>
+    </section>
+</main>

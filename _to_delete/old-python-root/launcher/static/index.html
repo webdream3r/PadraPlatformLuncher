@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title data-i18n="app.title">Padra Platform Launcher</title>
+  <link rel="icon" href="/ui/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/ui/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to the main content</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">P</span>
+      <div>
+        <h1 data-i18n="app.title">Padra Platform Launcher</h1>
+        <p class="muted" data-i18n="app.subtitle"></p>
+      </div>
+    </div>
+
+    <div class="topbar-controls">
+      <label class="field">
+        <span data-i18n="label.language"></span>
+        <select id="culture" data-i18n-aria-label="aria.language"></select>
+      </label>
+      <label class="field">
+        <span data-i18n="label.mode"></span>
+        <select id="mode" data-i18n-aria-label="aria.mode">
+          <option value="exclusive" data-i18n="mode.exclusive"></option>
+          <option value="concurrent" data-i18n="mode.concurrent"></option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <section class="statusbar" data-i18n-aria-label="aria.status">
+    <span id="status-pill" class="pill pill-idle">
+      <span class="dot" aria-hidden="true"></span>
+      <span id="status-text" data-i18n="status.starting"></span>
+    </span>
+
+    <div class="endpoint">
+      <span class="muted" data-i18n="label.endpoint"></span>
+      <code id="endpoint-url">—</code>
+      <button type="button" class="btn btn-ghost" id="copy-url" data-i18n="btn.copy_url"></button>
+      <button type="button" class="btn btn-ghost" id="copy-key" data-i18n="btn.copy_key"></button>
+    </div>
+
+    <span class="spacer"></span>
+    <span id="footer-summary" class="muted" data-i18n="footer.never"></span>
+  </section>
+
+  <p class="banner" id="global-error" role="alert" hidden></p>
+  <p class="banner banner-ok" id="global-notice" role="status" hidden></p>
+
+  <main id="main">
+    <!-- ------------------------------------------------------------ fleet -->
+    <section class="panel" aria-labelledby="fleet-heading">
+      <div class="panel-head">
+        <h2 id="fleet-heading" data-i18n="section.fleet"></h2>
+        <p class="muted hint" data-i18n="hint.mode"></p>
+        <button type="button" class="btn btn-ghost" id="refresh-status"
+                data-i18n="btn.refresh"></button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="grid">
+          <caption class="sr-only" data-i18n="section.fleet"></caption>
+          <thead>
+            <tr>
+              <th scope="col" data-i18n="table.active"></th>
+              <th scope="col" data-i18n="table.alias"></th>
+              <th scope="col" data-i18n="table.model"></th>
+              <th scope="col" class="num" data-i18n="table.context"></th>
+              <th scope="col" class="num" data-i18n="table.port"></th>
+              <th scope="col" data-i18n="table.state"></th>
+              <th scope="col" data-i18n="label.actions"></th>
+            </tr>
+          </thead>
+          <tbody id="fleet-rows">
+            <tr class="placeholder-row"><td colspan="7" data-i18n="loading"></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- -------------------------------------------------------- discovery -->
+    <section class="panel" aria-labelledby="library-heading">
+      <div class="panel-head">
+        <h2 id="library-heading" data-i18n="section.library"></h2>
+        <div class="tabs" role="tablist" data-i18n-aria-label="aria.library_tabs">
+          <button type="button" class="tab" role="tab" id="tab-local"
+                  aria-controls="pane-local" aria-selected="true"
+                  data-i18n="tab.downloaded"></button>
+          <button type="button" class="tab" role="tab" id="tab-catalog"
+                  aria-controls="pane-catalog" aria-selected="false"
+                  data-i18n="tab.catalog"></button>
+        </div>
+        <button type="button" class="btn btn-ghost" id="rescan"
+                data-i18n="btn.rescan"></button>
+      </div>
+
+      <div id="pane-local" role="tabpanel" aria-labelledby="tab-local">
+        <p class="strip muted" id="local-summary"></p>
+        <div class="table-wrap">
+          <table class="grid">
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="table.model"></th>
+                <th scope="col" data-i18n="table.quant"></th>
+                <th scope="col" class="num" data-i18n="table.size"></th>
+                <th scope="col" class="num" data-i18n="table.context"></th>
+                <th scope="col" data-i18n="table.source"></th>
+                <th scope="col" data-i18n="label.actions"></th>
+              </tr>
+            </thead>
+            <tbody id="local-rows">
+              <tr class="placeholder-row"><td colspan="6" data-i18n="loading"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="pane-catalog" role="tabpanel" aria-labelledby="tab-catalog" hidden>
+        <div class="strip">
+          <label class="field grow">
+            <span data-i18n="label.search"></span>
+            <input type="search" id="catalog-search" spellcheck="false"
+                   data-i18n-placeholder="placeholder.search">
+          </label>
+          <button type="button" class="btn" id="catalog-go" data-i18n="btn.search"></button>
+        </div>
+        <div class="table-wrap">
+          <table class="grid">
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="table.model"></th>
+                <th scope="col" class="num" data-i18n="table.downloads"></th>
+                <th scope="col" data-i18n="table.state"></th>
+                <th scope="col" data-i18n="label.actions"></th>
+              </tr>
+            </thead>
+            <tbody id="catalog-rows">
+              <tr class="placeholder-row"><td colspan="4" data-i18n="empty.catalog"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap" id="variant-wrap" hidden>
+          <h3 class="strip" id="variant-title"></h3>
+          <table class="grid">
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="table.quant"></th>
+                <th scope="col" class="num" data-i18n="table.size"></th>
+                <th scope="col" class="num" data-i18n="table.context"></th>
+                <th scope="col" data-i18n="table.state"></th>
+                <th scope="col" data-i18n="label.actions"></th>
+              </tr>
+            </thead>
+            <tbody id="variant-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- clients -->
+    <section class="panel" aria-labelledby="clients-heading">
+      <div class="panel-head">
+        <h2 id="clients-heading" data-i18n="section.clients"></h2>
+        <p class="muted hint" data-i18n="hint.clients"></p>
+      </div>
+
+      <fieldset class="strip targets">
+        <legend data-i18n="label.targets"></legend>
+        <label class="check"><input type="checkbox" value="codex" checked>
+          <span data-i18n="client.codex"></span></label>
+        <label class="check"><input type="checkbox" value="qwen" checked>
+          <span data-i18n="client.qwen"></span></label>
+        <label class="check"><input type="checkbox" value="claude" checked>
+          <span data-i18n="client.claude"></span></label>
+        <label class="check"><input type="checkbox" value="continue" checked>
+          <span data-i18n="client.continue"></span></label>
+        <label class="check"><input type="checkbox" value="vscode" checked>
+          <span data-i18n="client.vscode"></span></label>
+      </fieldset>
+
+      <div class="strip">
+        <label class="field">
+          <span data-i18n="label.scope"></span>
+          <select id="install-scope" data-i18n-aria-label="label.scope">
+            <option value="local" data-i18n="scope.local"></option>
+            <option value="lan" data-i18n="scope.lan"></option>
+          </select>
+        </label>
+        <button type="button" class="btn btn-primary" id="install-configs"
+                data-i18n="btn.install_configs"></button>
+        <button type="button" class="btn" id="download-bundle"
+                data-i18n="btn.download_bundle"></button>
+        <span class="spacer"></span>
+        <span class="muted" id="client-availability"></span>
+      </div>
+
+      <div class="launch">
+        <label class="field grow">
+          <span data-i18n="label.project_folder"></span>
+          <input type="text" id="project-folder" spellcheck="false"
+                 data-i18n-placeholder="placeholder.project_folder">
+        </label>
+        <label class="field">
+          <span data-i18n="label.model"></span>
+          <select id="launch-model" data-i18n-aria-label="aria.launch_model"></select>
+        </label>
+        <button type="button" class="btn btn-primary" id="open-codex"
+                data-i18n="btn.open_codex"></button>
+        <button type="button" class="btn btn-primary" id="open-qwen"
+                data-i18n="btn.open_qwen"></button>
+        <button type="button" class="btn btn-primary" id="open-claude"
+                data-i18n="btn.open_claude"></button>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- network -->
+    <section class="panel" aria-labelledby="network-heading">
+      <div class="panel-head">
+        <h2 id="network-heading" data-i18n="section.network"></h2>
+        <p class="muted hint" data-i18n="hint.network"></p>
+      </div>
+
+      <div class="strip">
+        <label class="check switch">
+          <input type="checkbox" id="allow-lan">
+          <span data-i18n="label.share_lan"></span>
+        </label>
+        <label class="field">
+          <span data-i18n="label.port"></span>
+          <input type="number" id="gateway-port" min="1" max="65535" step="1"
+                 data-i18n-aria-label="label.port">
+        </label>
+        <label class="field">
+          <span data-i18n="label.idle_timeout"></span>
+          <input type="number" id="idle-timeout" min="0" step="60"
+                 data-i18n-aria-label="label.idle_timeout">
+        </label>
+        <button type="button" class="btn btn-primary" id="apply-network"
+                data-i18n="btn.apply"></button>
+        <button type="button" class="btn" id="open-firewall"
+                data-i18n="btn.firewall"></button>
+      </div>
+
+      <ul class="urls" id="lan-urls"></ul>
+      <p class="strip muted" id="firewall-hint"></p>
+    </section>
+
+    <!-- --------------------------------------------------------------- log -->
+    <section class="panel panel-log" aria-labelledby="log-heading">
+      <div class="panel-head">
+        <h2 id="log-heading" data-i18n="section.log"></h2>
+        <button type="button" class="btn btn-ghost" id="clear-log"
+                data-i18n="btn.clear_log"></button>
+      </div>
+      <ol id="log" class="log" aria-live="polite" tabindex="0"
+          data-i18n-aria-label="section.log">
+        <li class="muted" data-i18n="empty.log"></li>
+      </ol>
+    </section>
+  </main>
+
+  <script src="/ui/app.js" type="module"></script>
+</body>
+</html>

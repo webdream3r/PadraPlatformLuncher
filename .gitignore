@@ -1,0 +1,10 @@
+bin/
+obj/
+dist/
+generated/
+launcher.settings.json
+padra-launcher.log
+.padra-backends.json
+.padra-keys/
+*.bak
+*.user

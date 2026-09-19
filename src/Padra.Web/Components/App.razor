@@ -1,0 +1,24 @@
+@inject IStringLocalizer<UiStrings> L
+
+@{
+    var culture = CultureInfo.CurrentUICulture;
+    var direction = culture.TextInfo.IsRightToLeft ? "rtl" : "ltr";
+}
+
+<!DOCTYPE html>
+<html lang="@culture.Name" dir="@direction">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>@L["app.title"]</title>
+    <base href="/" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/panel.css" />
+    <HeadOutlet @rendermode="InteractiveServer" />
+</head>
+<body>
+    <Routes @rendermode="InteractiveServer" />
+    <script src="_framework/blazor.web.js"></script>
+</body>
+</html>
