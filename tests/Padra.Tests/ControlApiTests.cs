@@ -251,7 +251,7 @@ public sealed class ControlApiTests
 
         Assert.Equal(new[] { "claude", "codex", "qwen" },
             data!["agents"]!.AsArray().Select(n => n!["id"]!.GetValue<string>()));
-        Assert.Equal(new[] { "codex", "qwen", "claude", "continue", "vscode" },
+        Assert.Equal(new[] { "codex", "qwen", "claude", "continue", "roo-code", "vscode" },
             data["targets"]!.AsArray().Select(n => n!.GetValue<string>()));
         Assert.False(data["unsloth"]!["installed"]!.GetValue<bool>());
     }

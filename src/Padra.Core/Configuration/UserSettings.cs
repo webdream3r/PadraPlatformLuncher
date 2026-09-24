@@ -127,6 +127,9 @@ public sealed class SettingsData
 
     [JsonPropertyName("clientModel")] public string ClientModel { get; set; } = string.Empty;
 
+    [JsonPropertyName("hiddenClientModels")]
+    public List<string> HiddenClientModels { get; set; } = new();
+
     [JsonPropertyName("lastAgent")] public string LastAgent { get; set; } = string.Empty;
 
     [JsonPropertyName("installTargets")]
@@ -155,6 +158,7 @@ public sealed class SettingsData
         ProjectFolder = ProjectFolder,
         SelectedAlias = SelectedAlias,
         ClientModel = ClientModel,
+        HiddenClientModels = new List<string>(HiddenClientModels),
         LastAgent = LastAgent,
         InstallTargets = new List<string>(InstallTargets),
         MakeDefaultProvider = MakeDefaultProvider,
@@ -179,6 +183,11 @@ public sealed class SettingsData
             ProjectFolder = ProjectFolder ?? string.Empty,
             SelectedAlias = SelectedAlias ?? string.Empty,
             ClientModel = ClientModel ?? string.Empty,
+            HiddenClientModels = (HiddenClientModels ?? new List<string>())
+                .Where(model => !string.IsNullOrWhiteSpace(model))
+                .Select(model => model.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList(),
             LastAgent = LastAgent ?? string.Empty,
             InstallTargets = targets,
             MakeDefaultProvider = MakeDefaultProvider,

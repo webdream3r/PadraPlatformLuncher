@@ -591,13 +591,19 @@ public static class ControlEndpoints
                 return NoModels();
             }
 
-            context = context.WithDefaultModel(defaultModel ?? settings.Snapshot().ClientModel);
+            var preferences = settings.Snapshot();
+            context = context.WithoutModels(preferences.HiddenClientModels)
+                .WithDefaultModel(defaultModel ?? preferences.ClientModel);
+            if (context.Models.Count == 0)
+            {
+                return NoModels();
+            }
             return Results.Json(new
             {
                 baseUrl = context.BaseUrl,
                 source = context.Source.ToString().ToLowerInvariant(),
                 files = ClientConfigWriter.GeneratedFiles(context,
-                    fullToolAccess: settings.Snapshot().FullToolAccess),
+                    fullToolAccess: preferences.FullToolAccess),
             });
         });
 
@@ -617,12 +623,18 @@ public static class ControlEndpoints
                 return NoModels();
             }
 
-            context = context.WithDefaultModel(defaultModel ?? settings.Snapshot().ClientModel);
+            var preferences = settings.Snapshot();
+            context = context.WithoutModels(preferences.HiddenClientModels)
+                .WithDefaultModel(defaultModel ?? preferences.ClientModel);
+            if (context.Models.Count == 0)
+            {
+                return NoModels();
+            }
             using var buffer = new MemoryStream();
             using (var archive = new ZipArchive(buffer, ZipArchiveMode.Create, leaveOpen: true))
             {
                 foreach (var (relative, content) in ClientConfigWriter.GeneratedFiles(context,
-                             fullToolAccess: settings.Snapshot().FullToolAccess))
+                              fullToolAccess: preferences.FullToolAccess))
                 {
                     var entry = archive.CreateEntry($"padra-client/{relative}");
                     using var stream = entry.Open();
@@ -658,10 +670,16 @@ public static class ControlEndpoints
                 return NoModels();
             }
 
-            var makeDefault = request.MakeDefault ?? settings.Snapshot().MakeDefaultProvider;
-            var fullToolAccess = request.FullToolAccess ?? settings.Snapshot().FullToolAccess;
-            var defaultModel = request.DefaultModel ?? settings.Snapshot().ClientModel;
-            context = context.WithDefaultModel(defaultModel);
+            var preferences = settings.Snapshot();
+            var makeDefault = request.MakeDefault ?? preferences.MakeDefaultProvider;
+            var fullToolAccess = request.FullToolAccess ?? preferences.FullToolAccess;
+            var defaultModel = request.DefaultModel ?? preferences.ClientModel;
+            context = context.WithoutModels(preferences.HiddenClientModels)
+                .WithDefaultModel(defaultModel);
+            if (context.Models.Count == 0)
+            {
+                return NoModels();
+            }
             var installOptions = new InstallOptions(makeDefault, request.PersistEnvironment ?? true,
                 fullToolAccess);
 

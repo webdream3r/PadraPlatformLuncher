@@ -153,6 +153,9 @@
   <data name="client.continue" xml:space="preserve">
     <value>Continue (افزونهٔ VS Code)</value>
   </data>
+  <data name="client.roo-code" xml:space="preserve">
+    <value>Roo Code (افزونهٔ VS Code)</value>
+  </data>
   <data name="client.qwen" xml:space="preserve">
     <value>Qwen Code</value>
   </data>
@@ -218,6 +221,9 @@
   </data>
   <data name="error.no_model" xml:space="preserve">
     <value>نخست یک مدل به دروازه اضافه کنید.</value>
+  </data>
+  <data name="error.no_visible_model" xml:space="preserve">
+    <value>حداقل یک مدل را برای انتخابگر افزونه‌ها نمایش دهید.</value>
   </data>
   <data name="error.no_targets" xml:space="preserve">
     <value>دست‌کم یک دستیار را برای پیکربندی انتخاب کنید.</value>
@@ -395,6 +401,9 @@
   </data>
   <data name="label.client_model" xml:space="preserve">
     <value>مدل پیش‌فرض عامل‌های کدنویسی</value>
+  </data>
+  <data name="label.plugin_models" xml:space="preserve">
+    <value>نمایش در انتخابگر افزونه‌ها</value>
   </data>
   <data name="label.search" xml:space="preserve">
     <value>جست‌وجو در فهرست Unsloth</value>

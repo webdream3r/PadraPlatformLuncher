@@ -172,7 +172,8 @@ The panel's **Install client configuration** button writes:
 | Claude Code in VS Code | VS Code `settings.json` | `claudeCode.environmentVariables`, `claudeCode.disableLoginPrompt` |
 | Every CLI in the VS Code terminal | VS Code `settings.json` | `terminal.integrated.env.<platform>` — merged with whatever is already there |
 | Copilot Chat (bring your own key) | `chatLanguageModels.json` next to it | one `customendpoint` provider whose `models[]` carries every alias |
-| Continue | `~/.continue/config.yaml` | one `provider: openai` model per alias |
+| Continue | `~/.continue/config.yaml` | one `provider: openai` model per alias, with tool-use capability and the correct gateway API mode |
+| Roo Code | `~/.padra/roo-code-settings.json` + VS Code `settings.json` | OpenAI-compatible provider profiles, auto-imported through `roo-cline.autoImportSettingsPath` |
 | Workspace tasks | `generated/vscode/tasks.json` | start the gateway, check status, run each agent |
 
 Everything is merged, not overwritten: unrelated keys survive, existing files are

@@ -153,6 +153,9 @@
   <data name="client.continue" xml:space="preserve">
     <value>Continue (VS Code)</value>
   </data>
+  <data name="client.roo-code" xml:space="preserve">
+    <value>Roo Code (VS Code)</value>
+  </data>
   <data name="client.qwen" xml:space="preserve">
     <value>Qwen Code</value>
   </data>
@@ -218,6 +221,9 @@
   </data>
   <data name="error.no_model" xml:space="preserve">
     <value>Add a model to the gateway first.</value>
+  </data>
+  <data name="error.no_visible_model" xml:space="preserve">
+    <value>Show at least one model in plugin selectors.</value>
   </data>
   <data name="error.no_targets" xml:space="preserve">
     <value>Select at least one agent to configure.</value>
@@ -395,6 +401,9 @@
   </data>
   <data name="label.client_model" xml:space="preserve">
     <value>Default model for coding agents</value>
+  </data>
+  <data name="label.plugin_models" xml:space="preserve">
+    <value>Show in plugin selectors</value>
   </data>
   <data name="label.search" xml:space="preserve">
     <value>Search the Unsloth catalog</value>

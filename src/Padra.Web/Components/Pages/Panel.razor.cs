@@ -69,6 +69,9 @@ public sealed partial class Panel
 
     private HashSet<string> SelectedTargets { get; set; } = new(StringComparer.Ordinal);
 
+    private HashSet<string> HiddenClientModels { get; set; } =
+        new(StringComparer.OrdinalIgnoreCase);
+
     private bool MakeDefault { get; set; } = true;
 
     private bool FullToolAccess { get; set; }
@@ -113,6 +116,9 @@ public sealed partial class Panel
         : Fleet.Options.Models.Select(m => (m.Alias, m.Alias == Fleet.DefaultAlias
             ? L["option.model_default", m.Alias].Value
             : m.Alias)).ToList();
+
+    private IReadOnlyList<(string Value, string Label)> PluginChoices =>
+        LaunchChoices.Where(choice => !HiddenClientModels.Contains(choice.Value)).ToList();
 
     private string UnslothStartCommand =>
         string.Join(' ', new[] { Fleet.Gateway.UnslothBin }.Concat(
@@ -188,13 +194,13 @@ public sealed partial class Panel
 
     private void SyncClientModel()
     {
-        if (LaunchChoices.Any(choice =>
+        if (PluginChoices.Any(choice =>
                 string.Equals(choice.Value, ClientModelAlias, StringComparison.OrdinalIgnoreCase)))
         {
             return;
         }
 
-        ClientModelAlias = LaunchChoices.FirstOrDefault().Value ?? string.Empty;
+        ClientModelAlias = PluginChoices.FirstOrDefault().Value ?? string.Empty;
     }
 
     private HardwareSnapshot Hardware { get; set; } = HardwareSnapshot.Unknown;
@@ -258,6 +264,7 @@ public sealed partial class Panel
     {
         var settings = Settings.Snapshot();
         SelectedTargets = settings.InstallTargets.ToHashSet(StringComparer.Ordinal);
+        HiddenClientModels = settings.HiddenClientModels.ToHashSet(StringComparer.OrdinalIgnoreCase);
         MakeDefault = settings.MakeDefaultProvider;
         FullToolAccess = settings.FullToolAccess;
         ProjectFolder = settings.ProjectFolder;
@@ -991,6 +998,21 @@ public sealed partial class Panel
         Settings.Update(s => s.ClientModel = value);
     }
 
+    private void SetPluginModelVisibility(string value, bool visible)
+    {
+        if (visible)
+        {
+            HiddenClientModels.Remove(value);
+        }
+        else
+        {
+            HiddenClientModels.Add(value);
+        }
+
+        Settings.Update(s => s.HiddenClientModels = HiddenClientModels.ToList());
+        SyncClientModel();
+    }
+
     private Task InstallAsync() => RunAsync(async () =>
     {
         if (SelectedTargets.Count == 0)
@@ -1028,7 +1050,14 @@ public sealed partial class Panel
             return;
         }
 
-        context = context.WithDefaultModel(ClientModelAlias);
+        context = context.WithoutModels(HiddenClientModels)
+            .WithDefaultModel(ClientModelAlias);
+
+        if (context.Models.Count == 0)
+        {
+            Error = L["error.no_visible_model"];
+            return;
+        }
 
         var output = System.IO.Path.Combine(
             System.IO.Path.GetDirectoryName(Fleet.ConfigPath) ?? ".", "generated");

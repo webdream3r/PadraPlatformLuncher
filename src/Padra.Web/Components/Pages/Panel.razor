@@ -822,16 +822,27 @@
                 <span>@L["label.client_model"]</span>
                 <select value="@ClientModelAlias"
                         @onchange='e => SetClientModel(e.Value?.ToString() ?? string.Empty)'>
-                    @if (LaunchChoices.Count == 0)
+                    @if (PluginChoices.Count == 0)
                     {
                         <option value="">@L["empty.fleet_short"]</option>
                     }
-                    @foreach (var (value, label) in LaunchChoices)
+                    @foreach (var (value, label) in PluginChoices)
                     {
                         <option value="@value">@label</option>
                     }
                 </select>
             </label>
+            <fieldset class="model-visibility">
+                <legend>@L["label.plugin_models"]</legend>
+                @foreach (var (value, label) in LaunchChoices)
+                {
+                    <label class="check">
+                        <input type="checkbox" checked="@(!HiddenClientModels.Contains(value))"
+                               @onchange="e => SetPluginModelVisibility(value, e.Value is true)" />
+                        <span>@value</span>
+                    </label>
+                }
+            </fieldset>
             <label class="check">
                 <input type="checkbox" checked="@MakeDefault"
                        @onchange="e => SetMakeDefault(e.Value is true)" />

@@ -183,12 +183,12 @@ public sealed class ClientConfigTests
         ClientConfigWriter.Install(context, new[]
         {
             ClientTarget.Codex, ClientTarget.Qwen, ClientTarget.Claude, ClientTarget.VsCode,
-        }, new InstallOptions(FullToolAccess: true), state);
+        }, new InstallOptions(FullToolAccess: true, PersistEnvironment: false), state);
 
         var report = ClientConfigWriter.Install(context, new[]
         {
             ClientTarget.Codex, ClientTarget.Qwen, ClientTarget.Claude, ClientTarget.VsCode,
-        }, new InstallOptions(FullToolAccess: false), state);
+        }, new InstallOptions(FullToolAccess: false, PersistEnvironment: false), state);
 
         Assert.True(report.Ok);
         Assert.DoesNotContain("approval_policy = \"never\"",
@@ -522,6 +522,47 @@ public sealed class ClientConfigTests
         var first = Assert.IsType<Dictionary<object, object>>(models[0]);
         Assert.Equal("openai", first["provider"]);
         Assert.Equal("http://127.0.0.1:8900/v1", first["apiBase"]);
+        var capabilities = Assert.IsType<List<object>>(first["capabilities"]);
+        Assert.Contains("tool_use", capabilities.Select(value => value.ToString()));
+        Assert.Equal("false", first["useResponsesApi"]!.ToString());
+    }
+
+    [Fact]
+    public void Hidden_models_are_removed_from_plugin_configuration_lists()
+    {
+        var context = Context().WithoutModels(new[] { "qwen3.5-4b" });
+        var files = ClientConfigWriter.GeneratedFiles(context);
+
+        Assert.DoesNotContain("qwen3.5-4b", files["continue/config.yaml"], StringComparison.Ordinal);
+        Assert.DoesNotContain("qwen3.5-4b", files["vscode/chatLanguageModels.json"],
+            StringComparison.Ordinal);
+        Assert.DoesNotContain("qwen3.5-4b", files["roo-code/settings.json"],
+            StringComparison.Ordinal);
+        Assert.Equal("gemma-4-26b-a4b-it", context.DefaultAlias);
+    }
+
+    [Fact]
+    public void Roo_code_import_is_written_and_selected_in_vscode()
+    {
+        using var environment = new TestEnvironment();
+        var userDirectory = environment.VsCodeUserDirectory();
+
+        Install(Context(), ClientTarget.RooCode);
+
+        var importPath = Path.Combine(environment.Home, ".padra", "roo-code-settings.json");
+        var imported = Read(importPath);
+        var providerProfiles = imported["providerProfiles"]!;
+        Assert.NotNull(imported["globalSettings"]);
+        Assert.Equal("Padra - qwen3.5-4b",
+            providerProfiles["currentApiConfigName"]!.GetValue<string>());
+        var profiles = providerProfiles["apiConfigs"]!.AsObject();
+        var profile = profiles["Padra - qwen3.5-4b"]!;
+        Assert.Equal("openai", profile["apiProvider"]!.GetValue<string>());
+        Assert.Equal("http://127.0.0.1:8900/v1", profile["openAiBaseUrl"]!.GetValue<string>());
+        Assert.Equal("qwen3.5-4b", profile["openAiModelId"]!.GetValue<string>());
+
+        var settings = Read(Path.Combine(userDirectory, "settings.json"));
+        Assert.Equal(importPath, settings[ClientConfigWriter.RooCodeImportSetting]!.GetValue<string>());
     }
 
     [Fact]
@@ -615,7 +656,7 @@ public sealed class ClientConfigTests
         {
             "codex/config.toml", "codex/qwen3.5-4b.config.toml", "qwen/settings.json",
             "qwen/.env", "claude/settings.json", "continue/config.yaml", "vscode/settings.json",
-            "vscode/chatLanguageModels.json", "vscode/tasks.json",
+            "roo-code/settings.json", "vscode/chatLanguageModels.json", "vscode/tasks.json",
             "env.sh", "env.ps1", "README.txt",
         }, names);
 
@@ -654,7 +695,7 @@ public sealed class ClientConfigTests
         Assert.True(ClientConfigWriter.TryParseTarget("Claude", out var claude));
         Assert.Equal(ClientTarget.Claude, claude);
         Assert.False(ClientConfigWriter.TryParseTarget("emacs", out _));
-        Assert.Equal(new[] { "codex", "qwen", "claude", "continue", "vscode" },
+        Assert.Equal(new[] { "codex", "qwen", "claude", "continue", "roo-code", "vscode" },
             ClientConfigWriter.AllTargets.Select(ClientConfigWriter.Slug));
     }
 

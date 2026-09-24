@@ -15,6 +15,7 @@ public enum ClientTarget
     Qwen,
     Claude,
     Continue,
+    RooCode,
     VsCode,
 }
 
@@ -113,8 +114,40 @@ public sealed class ClientContext
                 DefaultAlias = model.Alias,
                 WireApi = WireApi,
                 ProjectDirectory = ProjectDirectory,
-                Source = Source,
-            };
+             Source = Source,
+             };
+    }
+
+    /// <summary>Returns this endpoint with selected models hidden from client configurations.</summary>
+    public ClientContext WithoutModels(IReadOnlyCollection<string>? hiddenAliases)
+    {
+        if (hiddenAliases is null || hiddenAliases.Count == 0)
+        {
+            return this;
+        }
+
+        var hidden = hiddenAliases.ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var visible = Models.Where(model => !hidden.Contains(model.Alias)).ToList();
+        if (visible.Count == Models.Count)
+        {
+            return this;
+        }
+
+        var defaultAlias = visible.FirstOrDefault(model =>
+                string.Equals(model.Alias, DefaultAlias, StringComparison.OrdinalIgnoreCase))?.Alias
+            ?? visible.FirstOrDefault()?.Alias
+            ?? string.Empty;
+
+        return new ClientContext
+        {
+            BaseUrl = BaseUrl,
+            ApiKey = ApiKey,
+            Models = visible,
+            DefaultAlias = defaultAlias,
+            WireApi = WireApi,
+            ProjectDirectory = ProjectDirectory,
+            Source = Source,
+        };
     }
 
     public static ClientContext FromFleet(FleetOptions options, string? baseUrl = null,
@@ -265,6 +298,10 @@ public static class ClientConfigWriter
     /// <summary>The Copilot Chat provider entry this launcher owns.</summary>
     public const string CopilotProviderName = "Padra Platform Launcher";
 
+    public const string RooCodeImportSetting = "roo-cline.autoImportSettingsPath";
+
+    private const string RooCodeSettingsFileName = "roo-code-settings.json";
+
     public static readonly IReadOnlyList<ClientTarget> AllTargets =
         Enum.GetValues<ClientTarget>().ToList();
 
@@ -287,6 +324,7 @@ public static class ClientConfigWriter
     public static string Slug(ClientTarget target) => target switch
     {
         ClientTarget.VsCode => "vscode",
+        ClientTarget.RooCode => "roo-code",
         _ => target.ToString().ToLowerInvariant(),
     };
 
@@ -922,6 +960,8 @@ public static class ClientConfigWriter
                 $"    apiKey: {YamlScalar(context.ApiKey)}",
                 "    defaultCompletionOptions:",
                 $"      contextLength: {model.ContextLength.ToString(CultureInfo.InvariantCulture)}",
+                "    capabilities: [tool_use]",
+                $"    useResponsesApi: {(context.Direct ? "true" : "false")}",
                 "    roles: [chat, edit, apply]",
             });
         }
@@ -934,6 +974,93 @@ public static class ClientConfigWriter
         var target = Path.Combine(UserHome(), ".continue", "config.yaml");
         session.WriteText(ClientTarget.Continue, target, ContinueConfig(session.Context),
             session.Read(target));
+    }
+
+    /// <summary>
+    /// Roo Code imports provider profiles from a JSON export. Keeping this file
+    /// outside VS Code's extension storage makes it portable and restorable.
+    /// </summary>
+    public static JsonObject RooCodeSettings(ClientContext context)
+    {
+        var profiles = new JsonObject();
+        foreach (var model in context.Models)
+        {
+            var profileName = $"Padra - {model.Alias}";
+            profiles[profileName] = new JsonObject
+            {
+                ["id"] = $"padra-{StableSlug(model.Alias)}",
+                ["apiProvider"] = "openai",
+                ["openAiBaseUrl"] = context.BaseUrl,
+                ["openAiApiKey"] = context.ApiKey,
+                ["openAiModelId"] = model.Alias,
+                ["openAiStreamingEnabled"] = true,
+                ["openAiCustomModelInfo"] = new JsonObject
+                {
+                    ["contextWindow"] = model.ContextLength,
+                    ["supportsPromptCache"] = false,
+                    ["supportsTemperature"] = true,
+                },
+                ["rateLimitSeconds"] = 0,
+                ["consecutiveMistakeLimit"] = 3,
+                ["todoListEnabled"] = true,
+            };
+        }
+
+        var defaultProfile = context.Models.FirstOrDefault(m =>
+            string.Equals(m.Alias, context.DefaultAlias, StringComparison.OrdinalIgnoreCase))
+            ?? context.Models.FirstOrDefault();
+        var defaultName = defaultProfile is null ? "Padra" : $"Padra - {defaultProfile.Alias}";
+
+        return new JsonObject
+        {
+            ["providerProfiles"] = new JsonObject
+            {
+                ["currentApiConfigName"] = defaultName,
+                ["apiConfigs"] = profiles,
+                ["migrations"] = new JsonObject
+                {
+                    ["rateLimitSecondsMigrated"] = true,
+                    ["openAiHeadersMigrated"] = true,
+                    ["consecutiveMistakeLimitMigrated"] = true,
+                    ["todoListEnabledMigrated"] = true,
+                    ["claudeCodeLegacySettingsMigrated"] = true,
+                },
+            },
+            ["globalSettings"] = new JsonObject
+            {
+                ["diffEnabled"] = true,
+                ["fuzzyMatchThreshold"] = 1,
+            },
+        };
+    }
+
+    private static string StableSlug(string value)
+    {
+        var builder = new StringBuilder(value.Length);
+        foreach (var character in value.ToLowerInvariant())
+        {
+            builder.Append(char.IsLetterOrDigit(character) ? character : '-');
+        }
+
+        var slug = builder.ToString().Trim('-');
+        return slug.Length == 0 ? "model" : slug;
+    }
+
+    private static string RooCodeSettingsPath() =>
+        Path.Combine(UserHome(), ".padra", RooCodeSettingsFileName);
+
+    private static void InstallRooCode(Session session)
+    {
+        var configPath = RooCodeSettingsPath();
+        session.WriteJson(ClientTarget.RooCode, configPath, RooCodeSettings(session.Context));
+
+        foreach (var directory in VsCodeUserDirectories())
+        {
+            var settingsPath = Path.Combine(directory, "settings.json");
+            var settings = session.LoadJsonObject(ClientTarget.RooCode, settingsPath);
+            settings[RooCodeImportSetting] = configPath;
+            session.WriteJson(ClientTarget.RooCode, settingsPath, settings);
+        }
     }
 
     // =============================================================== VS Code #
@@ -1279,6 +1406,8 @@ public static class ClientConfigWriter
             Claude Code  copy claude/settings.json to ~/.claude/settings.json, then run
                          `claude`. It uses the Anthropic Messages API of this gateway.
             Continue     copy continue/config.yaml to ~/.continue/config.yaml.
+            Roo Code    import roo-code/settings.json through VS Code's
+                        roo-cline.autoImportSettingsPath setting.
             VS Code      merge vscode/settings.json into your user settings.json and
                          vscode/chatLanguageModels.json into the file Chat: Manage
                          Language Models opens; tasks.json belongs in .vscode/ of a
@@ -1323,6 +1452,11 @@ public static class ClientConfigWriter
         if (chosen.Contains(ClientTarget.Continue))
         {
             files["continue/config.yaml"] = ContinueConfig(context);
+        }
+
+        if (chosen.Contains(ClientTarget.RooCode))
+        {
+            files["roo-code/settings.json"] = Serialise(RooCodeSettings(context));
         }
 
         if (chosen.Contains(ClientTarget.VsCode))
@@ -1371,6 +1505,7 @@ public static class ClientConfigWriter
                     case ClientTarget.Qwen: InstallQwen(session); break;
                     case ClientTarget.Claude: InstallClaude(session); break;
                     case ClientTarget.Continue: InstallContinue(session); break;
+                    case ClientTarget.RooCode: InstallRooCode(session); break;
                     case ClientTarget.VsCode: InstallVsCode(session); break;
                     default: report.Note($"unknown target `{target}` Ã¢â‚¬â€ skipped"); break;
                 }
@@ -1604,6 +1739,16 @@ public static class ClientConfigWriter
                 StripContinue(alreadyRestored, report);
                 break;
 
+            case ClientTarget.RooCode:
+                if (!installed)
+                {
+                    NothingRecorded(target, report);
+                    break;
+                }
+
+                StripRooCode(alreadyRestored, report);
+                break;
+
             case ClientTarget.VsCode:
                 if (!installed)
                 {
@@ -1715,6 +1860,23 @@ public static class ClientConfigWriter
         {
             File.Delete(path);
             report.Removed(path);
+        }
+    }
+
+    private static void StripRooCode(ISet<string> alreadyRestored, InstallReport report)
+    {
+        var configPath = RooCodeSettingsPath();
+        if (!alreadyRestored.Contains(configPath) && File.Exists(configPath) &&
+            File.ReadAllText(configPath, Encoding.UTF8).Contains("Padra - ", StringComparison.Ordinal))
+        {
+            File.Delete(configPath);
+            report.Removed(configPath);
+        }
+
+        foreach (var directory in VsCodeUserDirectories())
+        {
+            StripJson(Path.Combine(directory, "settings.json"), alreadyRestored, report,
+                settings => settings.Remove(RooCodeImportSetting));
         }
     }
 
